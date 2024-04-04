@@ -36,3 +36,37 @@
     transform: rotate(360deg);
   }
 }
+
+.dark-mode-toggle {
+  width: 60px;
+  height: 30px;
+  background-color: #ccc;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  padding: 0 5px;
+  cursor: pointer;
+}
+
+.slider {
+  width: 24px;
+  height: 24px;
+  background-color: #fff;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: transform 0.3s ease-in-out;
+}
+
+.dark-mode-toggle.dark {
+  background-color: #333;
+}
+
+.dark-mode-toggle.dark .slider {
+  transform: translateX(30px);
+}
+
+.dark-mode-toggle.light .slider {
+  transform: translateX(0);
+}

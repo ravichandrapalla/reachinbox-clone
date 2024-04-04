@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import ReachInBoxLogo from "../assects/ReachInboxLogo.png";
 import GoogleLogo from "../assects/GoogleLogo.png";
+import { handleGoogleLoginApi } from "../services/authapi";
 
 const LoginContainer = styled.div`
   background: transparent;
@@ -25,37 +26,90 @@ const Main = styled.main`
   align-items: center;
 `;
 const LoginFormContainer = styled.section`
-  height: 10rem;
-  width: 16rem;
+  height: 19.5rem;
+  width: 28.75rem;
   border: 1px solid #343a40;
   border-radius: 1.01rem;
   padding: 1.5rem 2.5rem 2.5rem 2.5rem;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: space-evenly;
   gap: 3rem;
   overflow: hidden;
 `;
 const LoginDetailsContainer = styled.section`
   display: flex;
   flex-direction: column;
+  align-items: ${(props) => props.type === "manual" && "center"};
   text-align: center;
-  width: 100%;
+  /* width: 100%; */
   height: 6.43rem;
-  gap: 2rem;
+  gap: 1.5rem;
+  padding: 0.5rem;
+  overflow: hidden;
 `;
 const Legend = styled.p`
   width: 100%;
-  height: 1.9375rem;
+  height: 1.9rem;
   font-size: 1.25rem;
-  line-height: 1.9375rem;
+  /* line-height: 1.9375rem; */
   font-weight: 600;
   font-family: "Open Sans", sans-serif;
+  margin: 0;
 `;
-const GoogleSignUpButton = styled.div`
+const NormalText = styled.p`
+  font-weight: 400;
+  font-size: 1rem;
+  font-family: "Open Sans", sans-serif;
+  color: #cccccc;
+`;
+// const SigninLink = styled.anchor`
+//   font-weight: 400;
+//   font-size: 1rem;
+//   font-family: "Open Sans", sans-serif;
+//   color: #cccccc;
+// `;
+const GoogleSignUpButton = styled.button`
+  background: transparent;
   height: 3rem;
   border: 1px solid #707172;
-  border-radius: 0%.25rem;
+  border-radius: 0.25rem;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem;
+  color: #cccccc;
+  cursor: pointer;
+`;
+const ButtonInnerContainer = styled.div`
+  /* width: 11.25rem; */
+  gap: 0.75rem;
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+`;
+const CreateAccountButton = styled.button`
+  width: 12.18rem;
+  height: 3rem;
+  border-radius: 0.25rem;
+  padding: 13px 35px 13px 35px;
+  background: linear-gradient(to right, #4b63dd 100%, #0524bf 99%);
+  border: none;
+  outline: none;
+  color: #fff;
+  cursor: pointer;
+`;
+const CompositeText = styled.div`
+  display: flex;
+  column-gap: 0.5rem;
+`;
+const TextTypeTwo = styled.p`
+  font-weight: 400;
+  font-size: 1rem;
+  font-family: "Open Sans", sans-serif;
+  color: #909296;
 `;
 const Footer = styled.footer`
   color: #5c5f66;
@@ -74,6 +128,15 @@ const Footer = styled.footer`
 `;
 
 export default function Login() {
+  const handleGoogleLogin = () => {
+    // handleGoogleLoginApi()
+    // .then((resp) => console.log("response is ---->", resp))
+    // .catch((err) => console.log("error --->", err));
+    console.log("calling token api");
+    window.location.href =
+      "https://hiring.reachinbox.xyz/api/v1/auth/google-login?redirect_to=http://localhost:3000/";
+    console.log("calling done");
+  };
   return (
     <LoginContainer>
       <Header>
@@ -83,11 +146,20 @@ export default function Login() {
         <LoginFormContainer>
           <LoginDetailsContainer>
             <Legend>Create a new account</Legend>
-            <GoogleSignUpButton>
-              <img src={GoogleLogo} alt="google" />
+            <GoogleSignUpButton onClick={handleGoogleLogin}>
+              <ButtonInnerContainer>
+                <img src={GoogleLogo} alt="google" width={30} height={30} />
+                <NormalText>Sign Up with Google</NormalText>
+              </ButtonInnerContainer>
             </GoogleSignUpButton>
           </LoginDetailsContainer>
-          <LoginDetailsContainer></LoginDetailsContainer>
+          <LoginDetailsContainer type="manual">
+            <CreateAccountButton>Create an Account</CreateAccountButton>
+            <CompositeText>
+              <TextTypeTwo>Already have an account?</TextTypeTwo>
+              <NormalText>Sign in</NormalText>
+            </CompositeText>
+          </LoginDetailsContainer>
         </LoginFormContainer>
       </Main>
       <Footer>&copy; 2023 Reachinbox. All rights reserved</Footer>
