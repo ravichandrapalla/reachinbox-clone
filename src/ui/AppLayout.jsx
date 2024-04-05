@@ -4,6 +4,7 @@ import Sidebar from "./Sidebar";
 import Header from "./Header";
 
 import styled from "styled-components";
+import { useSelector } from "react-redux";
 
 const StyledAppLayout = styled.div`
   display: grid;
@@ -13,9 +14,10 @@ const StyledAppLayout = styled.div`
 `;
 
 const Main = styled.main`
-  background-color: #000000;
+  background-color: ${(props) => (props.isDark ? "#000000" : "#fff")};
   /* padding: 4rem 4.8rem 6.4rem; */
   overflow: scroll;
+  position: relative;
 `;
 
 const Container = styled.div`
@@ -27,11 +29,12 @@ const Container = styled.div`
 `;
 
 function AppLayout() {
+  const isDark = useSelector((store) => store?.darkModeSlice?.isDark);
   return (
     <StyledAppLayout>
       <Header />
       <Sidebar />
-      <Main>
+      <Main isDark={isDark}>
         <Container>
           <Outlet />
         </Container>

@@ -6,6 +6,7 @@ import { handleGetAllMailsApi } from "../services/resourceapi";
 import Spinner from "../ui/Spinner";
 import { IoIosArrowDown } from "react-icons/io";
 import { IoReload } from "react-icons/io5";
+import CampaignLogo from "../assects/CampaignIcon.png";
 
 const ScreenEmpty = styled.div`
   background: transparent;
@@ -62,8 +63,8 @@ const SpinnerBackground = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-  height: 100vh;
-  width: 100vw;
+  height: 100%;
+  width: 100%;
   background: transparent;
   background-color: rgba(219, 214, 217, 0.2);
   backdrop-filter: blur(5px);
@@ -126,12 +127,17 @@ const Text = styled.span`
   color: #fff;
   font-size: 0.8rem;
   font-weight: 600;
+  width: 85px;
+
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   font-family: "Open Sans", sans-serif;
 `;
 
 const DarkText = styled.span`
   color: #7f7f7f;
-  font-size: 0.875rem;
+  font-size: 0.75rem;
   font-weight: 400;
   font-family: "Open Sans", sans-serif;
 `;
@@ -141,6 +147,7 @@ const ReloadLogoContainer = styled.div`
   background-color: #2f3030;
   padding: 0.5rem;
   border-radius: 0.5rem;
+  cursor: pointer;
 `;
 const CountContainer = styled.span`
   display: flex;
@@ -168,26 +175,31 @@ const Containerthree = styled.span`
   justify-content: space-between;
   background-color: transparent;
   padding: 0.7rem 0rem;
+  overflow: hidden;
 `;
 const ReplyCountDiv = styled.div`
   display: flex;
-  column-gap: 0.3rem;
+  column-gap: 0.1rem;
   align-items: center;
   color: #fff;
 `;
 const MailContainer = styled.div`
   border-bottom: 1px solid #33383f;
   padding: 0.5rem;
+  cursor: pointer;
 `;
 const MailNameContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  background-color: red;
+  margin-bottom: 0.5rem;
 `;
 const MailUser = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  row-gap: 0.5rem;
+  width: 70%;
+  overflow: hidden;
 `;
 const DateContainer = styled.div`
   color: #2f3030;
@@ -199,6 +211,26 @@ const TextTwo = styled.span`
   font-size: 12px;
   font-family: sans-serif;
   color: #e1e0e0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-align: left;
+`;
+const TagContainer = styled.div`
+  display: flex;
+  background-color: #222426;
+  border-radius: 1rem;
+  column-gap: 0.5rem;
+  text-align: center;
+  justify-content: center;
+  width: 140px;
+  align-items: center;
+  padding: 0.1rem;
+`;
+const Tag = styled.span`
+  padding: 0.1rem;
+  color: #fff;
+  font-size: 0.8rem;
 `;
 export default function OneBox() {
   const [allMails, setAllMails] = useState([]);
@@ -235,7 +267,8 @@ export default function OneBox() {
     ];
     const month = monthNames[date.getMonth()];
     const day = date.getDate();
-    const formattedDate = `${month} ${day}`;
+    const trimmedMonth = month.substring(0, 3);
+    const formattedDate = `${trimmedMonth} ${day}`;
     return formattedDate;
   };
   const EmptyScreen = () => {
@@ -251,6 +284,23 @@ export default function OneBox() {
       </EmptyMessageContainer>
     );
   };
+  const Mail = ({ fromEmail, subject, sentAt }) => (
+    <MailContainer>
+      <MailNameContainer>
+        <MailUser>
+          <Text>{fromEmail}</Text>
+          <TextTwo>{subject}</TextTwo>
+        </MailUser>
+        <DateContainer>
+          <DarkText>{DateFormater(sentAt)}</DarkText>
+        </DateContainer>
+      </MailNameContainer>
+      <TagContainer>
+        <img src={CampaignLogo} alt="campaign" width={15} height={15} />
+        <Tag>Campaign Name</Tag>
+      </TagContainer>
+    </MailContainer>
+  );
   return loading ? (
     <SpinnerBackground>
       <SpinnerContainer>
@@ -297,17 +347,12 @@ export default function OneBox() {
           </Containerthree>
         </AllMailsHeader>
         {allMails?.map((m) => (
-          <MailContainer key={m.id}>
-            <MailNameContainer>
-              <MailUser>
-                <Text>{m.fromEmail}</Text>
-                <TextTwo>{m.subject}</TextTwo>
-              </MailUser>
-              <DateContainer>
-                <DarkText>{DateFormater(m.sentAt)}</DarkText>
-              </DateContainer>
-            </MailNameContainer>
-          </MailContainer>
+          <Mail
+            key={m.id}
+            fromEmail={m.fromEmail}
+            subject={m.subject}
+            sentAt={m.sentAt}
+          />
         ))}
       </AllMailsContainer>
     </ScreenNonEmpty>

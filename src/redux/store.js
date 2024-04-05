@@ -9,9 +9,19 @@ const activeTabSlice = createSlice({
     },
   },
 });
+const darkModeSlice = createSlice({
+  name: "darkMode",
+  initialState: { isDark: false },
+  reducers: {
+    setDarkMode: (state, action) => {
+      state.isDark = action.payload;
+    },
+  },
+});
 
 const rootReducer = {
   tabSlice: activeTabSlice.reducer,
+  darkModeSlice: darkModeSlice.reducer,
 };
 
 const store = configureStore({
@@ -19,5 +29,6 @@ const store = configureStore({
 });
 
 export const { setTab } = activeTabSlice.actions;
+export const { setDarkMode } = darkModeSlice.actions;
 
 export default store;

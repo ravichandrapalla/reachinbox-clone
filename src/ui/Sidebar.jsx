@@ -17,6 +17,7 @@ const StyledSidebar = styled.aside`
 const LogoContainer = styled.div`
   margin-top: 1rem;
   height: 100px;
+  cursor: pointer;
 `;
 
 function Sidebar() {

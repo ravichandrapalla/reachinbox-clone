@@ -4,6 +4,7 @@ import styled from "styled-components";
 // import { HiOutlineUser } from "react-icons/hi2";
 import { useNavigate } from "react-router-dom";
 import { DarkModeToggle } from "./DarkModeToggle";
+import { IoIosArrowDown } from "react-icons/io";
 
 const StyledHeaderMenu = styled.ul`
   display: flex;
@@ -15,7 +16,16 @@ const StyledHeaderMenu = styled.ul`
 const ListItems = styled.li`
   list-style: none;
 `;
-
+const Profile = styled.div`
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 120px;
+  cursor: pointer;
+`;
+const Text = styled.span`
+  color: #fff;
+`;
 export function HeaderMenu() {
   const navigate = useNavigate();
   return (
@@ -29,7 +39,10 @@ export function HeaderMenu() {
         <DarkModeToggle />
       </ListItems>
       <ListItems>
-        <span>My Name</span>
+        <Profile>
+          <Text>My Name</Text>
+          <IoIosArrowDown color="white" />
+        </Profile>
       </ListItems>
       {/* <li>
         <Logout />
