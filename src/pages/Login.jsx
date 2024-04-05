@@ -2,6 +2,7 @@ import styled from "styled-components";
 import ReachInBoxLogo from "../assects/ReachInboxLogo.png";
 import GoogleLogo from "../assects/GoogleLogo.png";
 import { handleGoogleLoginApi } from "../services/authapi";
+import { axios } from "axios";
 
 const LoginContainer = styled.div`
   background: transparent;
@@ -82,6 +83,7 @@ const GoogleSignUpButton = styled.button`
   color: #cccccc;
   cursor: pointer;
 `;
+
 const ButtonInnerContainer = styled.div`
   /* width: 11.25rem; */
   gap: 0.75rem;
@@ -135,7 +137,6 @@ export default function Login() {
 
     window.location.href =
       "https://hiring.reachinbox.xyz/api/v1/auth/google-login?redirect_to=http://localhost:3000/";
-    console.log("frontend api is called");
   };
   return (
     <LoginContainer>
