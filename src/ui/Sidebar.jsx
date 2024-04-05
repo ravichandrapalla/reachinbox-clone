@@ -23,7 +23,7 @@ function Sidebar() {
   return (
     <StyledSidebar>
       <LogoContainer>
-        <img src={OneBoxLogo} width={32} height={32} />
+        <img src={OneBoxLogo} width={32} height={32} alt="main logo" />
       </LogoContainer>
 
       <MainNav />

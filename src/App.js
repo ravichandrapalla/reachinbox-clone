@@ -5,25 +5,21 @@ import OneBox from "./pages/OneBox";
 import { useEffect } from "react";
 import ProtectedRoute from "./ui/ProtectedRoute";
 import AppLayout from "./ui/AppLayout";
+import { Provider } from "react-redux";
+import store from "./redux/store";
 function App() {
   const navigate = useNavigate();
-  useEffect(() => {
-    const urlPharams = new URLSearchParams(window.location.search);
-    const token = urlPharams.get("token");
-    console.log(token);
-    if (token) {
-      sessionStorage.setItem("accessToken", token);
-      navigate("/oneBox");
-    }
-  }, []);
+
   return (
     <div className="App">
       <Routes>
         <Route
           element={
-            <ProtectedRoute>
-              <AppLayout />
-            </ProtectedRoute>
+            <Provider store={store}>
+              <ProtectedRoute>
+                <AppLayout />
+              </ProtectedRoute>
+            </Provider>
           }
         >
           {console.log("inside private routes")}

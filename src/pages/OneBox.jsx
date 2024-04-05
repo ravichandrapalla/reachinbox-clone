@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import NoMailsIcon from "../assects/NoMailsIcon.png";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 const Screen = styled.div`
   background: transparent;
@@ -44,6 +46,9 @@ const Message = styled.span`
 `;
 
 export default function OneBox() {
+  const storeData = useSelector((state) => state);
+  console.log(storeData);
+  useEffect(() => {}, []);
   const EmptyScreen = () => {
     return (
       <EmptyMessageContainer>

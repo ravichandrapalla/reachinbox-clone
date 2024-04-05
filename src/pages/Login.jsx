@@ -132,10 +132,10 @@ export default function Login() {
     // handleGoogleLoginApi()
     // .then((resp) => console.log("response is ---->", resp))
     // .catch((err) => console.log("error --->", err));
-    console.log("calling token api");
+
     window.location.href =
       "https://hiring.reachinbox.xyz/api/v1/auth/google-login?redirect_to=http://localhost:3000/";
-    console.log("calling done");
+    console.log("frontend api is called");
   };
   return (
     <LoginContainer>

@@ -16,26 +16,23 @@ const FullPage = styled.div`
 
 export default function ProtectedRoute({ children }) {
   const navigate = useNavigate();
-  const [token, setToken] = useState(null);
-  //1 . Load auth user
-  //   const { user, isLoading, isAuthenticated } = useUser();
-
-  //2 . While loading show spinner
+  const [authenticated, setAuthenticated] = useState(() => {
+    sessionStorage.getItem("accessToken");
+  });
 
   useEffect(() => {
-    const token = sessionStorage.getItem("accessToken");
-    setToken(token);
-    if (!token) {
+    const urlPharams = new URLSearchParams(window.location.search);
+    const token =
+      urlPharams.get("token") || sessionStorage.getItem("accessToken");
+    console.log(token);
+    if (token) {
+      sessionStorage.setItem("accessToken", token);
+      setAuthenticated(true);
+    } else {
+      console.log("redirecting to login because no token found");
       navigate("/login");
     }
   }, []);
 
-  if (!token)
-    return (
-      <FullPage>
-        <Spinner />
-      </FullPage>
-    );
-
-  if (token) return children;
+  if (authenticated) return children;
 }

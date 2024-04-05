@@ -32,7 +32,7 @@ const StyledNavLink = styled(NavLink)`
     align-items: center;
     /* gap: 1.2rem; */
 
-    color: white;
+    color: black;
     font-size: 1rem;
     font-weight: 500;
     /* padding: 1.2rem 2.4rem; */
@@ -67,6 +67,13 @@ const ListItems = styled.li`
   list-style: none;
   margin: 0;
 `;
+const ActiveTabContainer = styled.div`
+  background-color: #2f3030;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  border: none;
+  outline: none;
+`;
 
 function MainNav() {
   return (
@@ -99,7 +106,15 @@ function MainNav() {
         </ListItems>
         <ListItems>
           <StyledNavLink to="/oneBox">
-            <img src={onebox} height={26} width={26} alt="onebox" />
+            <ActiveTabContainer>
+              <img
+                src={onebox}
+                height={26}
+                width={26}
+                alt="onebox"
+                color="#AEAEAE"
+              />
+            </ActiveTabContainer>
           </StyledNavLink>
         </ListItems>
         <ListItems>
