@@ -24,12 +24,12 @@ export default function ProtectedRoute({ children }) {
     const urlPharams = new URLSearchParams(window.location.search);
     const token =
       urlPharams.get("token") || sessionStorage.getItem("accessToken");
-    console.log(token);
+    // console.log(token);
     if (token) {
       sessionStorage.setItem("accessToken", token);
       setAuthenticated(true);
     } else {
-      console.log("redirecting to login because no token found");
+      // console.log("redirecting to login because no token found");
       navigate("/login");
     }
   }, []);
