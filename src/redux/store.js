@@ -11,7 +11,7 @@ const activeTabSlice = createSlice({
 });
 const darkModeSlice = createSlice({
   name: "darkMode",
-  initialState: { isDark: false },
+  initialState: { isDark: true },
   reducers: {
     setDarkMode: (state, action) => {
       state.isDark = action.payload;
