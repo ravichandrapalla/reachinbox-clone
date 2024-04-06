@@ -10,8 +10,8 @@ import CampaignLogo from "../assects/CampaignIcon.png";
 
 const ScreenEmpty = styled.div`
   background: transparent;
-  height: 100%;
-  width: 100%;
+  height: 84vh;
+  width: calc(100vw-32px);
   display: flex;
   justify-content: center;
   align-items: center;
