@@ -236,19 +236,25 @@ export default function OneBox() {
   const [allMails, setAllMails] = useState([]);
   const [loading, setLoading] = useState(false);
   const storeData = useSelector((state) => state);
-  console.log(storeData);
+  // console.log(storeData);
   useEffect(() => {
     setLoading(true);
     handleGetAllMailsApi()
-      .then((data) => setAllMails(data.data))
+      .then((data) => {
+        if (data?.data) {
+          setAllMails(data.data);
+        } else {
+          setAllMails([]);
+        }
+      })
       .catch((err) => console.log(err))
       .finally(() => {
         setLoading(false);
       });
   }, []);
-  useEffect(() => {
-    console.log("state of allmails ---> ", allMails);
-  }, [allMails]);
+  // useEffect(() => {
+  //   console.log("state of allmails ---> ", allMails);
+  // }, [allMails]);
   const DateFormater = (timestmp) => {
     const date = new Date(timestmp);
     const monthNames = [
@@ -307,7 +313,7 @@ export default function OneBox() {
         <Spinner />
       </SpinnerContainer>
     </SpinnerBackground>
-  ) : allMails.length === 0 ? (
+  ) : allMails?.length === 0 ? (
     <ScreenEmpty>
       <EmptyScreen />
     </ScreenEmpty>
