@@ -7,6 +7,10 @@ import Spinner from "../ui/Spinner";
 import { IoIosArrowDown } from "react-icons/io";
 import { IoReload } from "react-icons/io5";
 import CampaignLogo from "../assects/CampaignIcon.png";
+import { Mail } from "../components/OneBox/MailBox";
+import { setSelectedMailData } from "../redux/store";
+import Sun from "../assects/Sun.png";
+import { SlOptions } from "react-icons/sl";
 
 const ScreenEmpty = styled.div`
   background: transparent;
@@ -85,6 +89,61 @@ const AllMailsContainer = styled.section`
   padding: 1.2rem;
   border-right: 1px solid #33383f;
 `;
+const AllThreadsContainer = styled.section`
+  width: 50rem;
+  height: 4rem;
+  display: flex;
+  flex-direction: column;
+  background: transparent;
+  overflow: auto;
+  height: 85vh;
+
+  border: 1px solid #33383f;
+`;
+const AllThreadsHeader = styled.section`
+  /* padding: 1rem; */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.2rem;
+  border-bottom: 1px solid #343a40;
+`;
+const AllThreadsHeaderLeftSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  row-gap: 0.2rem;
+`;
+const AllThreadsHeaderRightSection = styled.div`
+  display: flex;
+  column-gap: 1rem;
+`;
+const RightDetailsOne = styled.div`
+  background-color: #1f1f1f;
+  display: flex;
+  column-gap: 0.2rem;
+  padding: 0.1rem 0.3rem;
+  align-items: center;
+  border: 1px solid #343a40;
+  border-radius: 5px;
+`;
+const DividerContainer = styled.div`
+  padding: 1.2rem;
+  position: relative;
+
+  overflow: hidden;
+`;
+const Divider = styled.div`
+  height: 0.1px;
+  border: 1px solid #343a40;
+`;
+const TimeLineDate = styled.div`
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+`;
+
 const AllMailsHeader = styled.section`
   width: 100%;
   display: flex;
@@ -232,10 +291,22 @@ const Tag = styled.span`
   color: #fff;
   font-size: 0.8rem;
 `;
+const TimeLineDateContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #2f3030;
+  padding: 0.3rem;
+  color: #fff;
+  font-size: 0.8rem;
+  border-radius: 5px;
+`;
 export default function OneBox() {
   const [allMails, setAllMails] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [currThread, setCurrThread] = useState(0);
   const storeData = useSelector((state) => state);
+  const dispatch = useDispatch();
   // console.log(storeData);
   useEffect(() => {
     setLoading(true);
@@ -252,31 +323,34 @@ export default function OneBox() {
         setLoading(false);
       });
   }, []);
+  useEffect(() => {
+    console.log("cur the", storeData);
+  }, [currThread]);
   // useEffect(() => {
   //   console.log("state of allmails ---> ", allMails);
   // }, [allMails]);
-  const DateFormater = (timestmp) => {
-    const date = new Date(timestmp);
-    const monthNames = [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
-    ];
-    const month = monthNames[date.getMonth()];
-    const day = date.getDate();
-    const trimmedMonth = month.substring(0, 3);
-    const formattedDate = `${trimmedMonth} ${day}`;
-    return formattedDate;
-  };
+  // const DateFormater = (timestmp) => {
+  //   const date = new Date(timestmp);
+  //   const monthNames = [
+  //     "January",
+  //     "February",
+  //     "March",
+  //     "April",
+  //     "May",
+  //     "June",
+  //     "July",
+  //     "August",
+  //     "September",
+  //     "October",
+  //     "November",
+  //     "December",
+  //   ];
+  //   const month = monthNames[date.getMonth()];
+  //   const day = date.getDate();
+  //   const trimmedMonth = month.substring(0, 3);
+  //   const formattedDate = `${trimmedMonth} ${day}`;
+  //   return formattedDate;
+  // };
   const EmptyScreen = () => {
     return (
       <EmptyMessageContainer>
@@ -290,23 +364,36 @@ export default function OneBox() {
       </EmptyMessageContainer>
     );
   };
-  const Mail = ({ fromEmail, subject, sentAt }) => (
-    <MailContainer>
-      <MailNameContainer>
-        <MailUser>
-          <Text>{fromEmail}</Text>
-          <TextTwo>{subject}</TextTwo>
-        </MailUser>
-        <DateContainer>
-          <DarkText>{DateFormater(sentAt)}</DarkText>
-        </DateContainer>
-      </MailNameContainer>
-      <TagContainer>
-        <img src={CampaignLogo} alt="campaign" width={15} height={15} />
-        <Tag>Campaign Name</Tag>
-      </TagContainer>
-    </MailContainer>
-  );
+  const handleSetCurrentThread = (user, thread) => {
+    dispatch(setSelectedMailData(user));
+    setCurrThread(thread);
+  };
+  const getDataFromStore = () => {
+    const { fromEmail, fromName } = storeData.selectedMailBoxSlice;
+    return (
+      <>
+        <Text>{fromName}</Text>
+        <DarkText>{fromEmail}</DarkText>
+      </>
+    );
+  };
+  // const Mail = ({ fromEmail, subject, sentAt }) => (
+  //   <MailContainer>
+  //     <MailNameContainer>
+  //       <MailUser>
+  //         <Text>{fromEmail}</Text>
+  //         <TextTwo>{subject}</TextTwo>
+  //       </MailUser>
+  //       <DateContainer>
+  //         <DarkText>{DateFormater(sentAt)}</DarkText>
+  //       </DateContainer>
+  //     </MailNameContainer>
+  //     <TagContainer>
+  //       <img src={CampaignLogo} alt="campaign" width={15} height={15} />
+  //       <Tag>Campaign Name</Tag>
+  //     </TagContainer>
+  //   </MailContainer>
+  // );
   return loading ? (
     <SpinnerBackground>
       <SpinnerContainer>
@@ -358,9 +445,39 @@ export default function OneBox() {
             fromEmail={m.fromEmail}
             subject={m.subject}
             sentAt={m.sentAt}
+            thread={m.threadId}
+            setCurrentThread={(thread) => handleSetCurrentThread(m, thread)}
           />
         ))}
       </AllMailsContainer>
+      <AllThreadsContainer>
+        <AllThreadsHeader>
+          <AllThreadsHeaderLeftSection>
+            {getDataFromStore()}
+          </AllThreadsHeaderLeftSection>
+          <AllThreadsHeaderRightSection>
+            <RightDetailsOne>
+              <img src={Sun} alt="sun" width={20} height={20} />
+              <TextTwo>Meeting Completed</TextTwo>
+              <IoIosArrowDown color="white" />
+            </RightDetailsOne>
+            <RightDetailsOne>
+              <TextTwo>Move</TextTwo>
+              <IoIosArrowDown color="white" />
+            </RightDetailsOne>
+
+            <ReloadLogoContainer>
+              <SlOptions color="white" />
+            </ReloadLogoContainer>
+          </AllThreadsHeaderRightSection>
+        </AllThreadsHeader>
+        <DividerContainer>
+          <Divider></Divider>
+          <TimeLineDate>
+            <TimeLineDateContainer>Today</TimeLineDateContainer>
+          </TimeLineDate>
+        </DividerContainer>
+      </AllThreadsContainer>
     </ScreenNonEmpty>
   );
 }

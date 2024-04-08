@@ -6,6 +6,7 @@ const StyledSidebar = styled.aside`
   background-color: #101113;
   /* padding: 3.2rem 2.4rem; */
   width: 3.5rem;
+
   border-right: 1px solid #343a40;
   grid-row: 1/-1;
   display: flex;
