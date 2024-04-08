@@ -4,4 +4,4 @@
 
 3. ---> go to the repo main directory in vscode --> open terminal --> type 'npm start' this command open the development server at port 3000. it will be automatically redirect itself to login screen.
 
-Node only onebox page routes are created and others wont work.
+Note: only onebox page routes are created and others wont work.
