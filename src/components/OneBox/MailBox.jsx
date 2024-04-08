@@ -76,8 +76,8 @@ export const Mail = ({
   fromEmail,
   subject,
   sentAt,
-  thread,
-  setCurrentThread,
+  threadId,
+  setCurrentThreadId,
   id,
 }) => {
   const DateFormater = (timestmp) => {
@@ -106,7 +106,7 @@ export const Mail = ({
   return (
     <MailContainer
       selected={storeData.selectedMailBoxSlice.id === id}
-      onClick={() => setCurrentThread(thread)}
+      onClick={() => setCurrentThreadId(threadId)}
     >
       <MailNameContainer>
         <MailUser>

@@ -2,15 +2,25 @@ import styled from "styled-components";
 import NoMailsIcon from "../assects/NoMailsIcon.png";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { handleGetAllMailsApi } from "../services/resourceapi";
+import {
+  handleGetAllMailsApi,
+  handleGetAllcurrThreadData,
+} from "../services/resourceapi";
 import Spinner from "../ui/Spinner";
 import { IoIosArrowDown } from "react-icons/io";
 import { IoReload } from "react-icons/io5";
 import CampaignLogo from "../assects/CampaignIcon.png";
 import { Mail } from "../components/OneBox/MailBox";
-import { setSelectedMailData } from "../redux/store";
+import store, {
+  removeSelectedMailData,
+  setSelectedMailData,
+} from "../redux/store";
 import Sun from "../assects/Sun.png";
 import { SlOptions } from "react-icons/sl";
+import { toBeChecked } from "@testing-library/jest-dom/dist/matchers";
+import { ThreadBox } from "../components/OneBox/ThreadBox";
+import LeadDetails from "../components/OneBox/LeadDetails";
+import Activities from "../components/OneBox/Activities";
 
 const ScreenEmpty = styled.div`
   background: transparent;
@@ -97,8 +107,18 @@ const AllThreadsContainer = styled.section`
   background: transparent;
   overflow: auto;
   height: 85vh;
-
+  position: relative;
   border: 1px solid #33383f;
+`;
+const LeadActivitiesContainer = styled.section`
+  width: calc(100vw - 65rem);
+  height: 85vh;
+  display: flex;
+  flex-direction: column;
+  background: transparent;
+  overflow-y: auto;
+  padding: 1rem;
+  border-left: 1px solid #33383f;
 `;
 const AllThreadsHeader = styled.section`
   /* padding: 1rem; */
@@ -142,6 +162,7 @@ const TimeLineDate = styled.div`
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
+  cursor: pointer;
 `;
 const ThreadMessagesContainer = styled.div`
   padding: 1.2rem;
@@ -220,6 +241,17 @@ const Text = styled.span`
   font-size: 0.8rem;
   font-weight: ${(props) => (props.type = "two" ? 500 : 600)};
   width: 85px;
+
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-family: "Open Sans", sans-serif;
+`;
+const TextHighWidth = styled.span`
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: ${(props) => (props.type = "two" ? 500 : 600)};
+  width: 300px;
 
   overflow: hidden;
   white-space: nowrap;
@@ -352,11 +384,23 @@ const TimeLineDateContainer = styled.div`
   font-size: 0.8rem;
   border-radius: 5px;
 `;
+const ViewButton = styled.button`
+  background-color: #4285f4;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+`;
 export default function OneBox() {
+  const storeData = useSelector((state) => state);
   const [allMails, setAllMails] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [currThread, setCurrThread] = useState(0);
-  const storeData = useSelector((state) => state);
+  const [currThreadId, setCurrThreadId] = useState(1021);
+  const [currThread, setCurrThread] = useState([]);
+  const [threadLoading, setThreadLoading] = useState(false);
+  const [showFullThread, setShowFullThread] = useState(false);
+
   const dispatch = useDispatch();
   // console.log(storeData);
   useEffect(() => {
@@ -365,45 +409,43 @@ export default function OneBox() {
       .then((data) => {
         if (data?.data) {
           setAllMails(data.data);
+          // setCurrThreadId(
+          //   data.data.threadId || storeData?.selectedMailBoxSlice?.threadId
+          // );
           dispatch(setSelectedMailData(data.data[0]));
         } else {
           setAllMails([]);
-          dispatch(setSelectedMailData({}));
+          dispatch(removeSelectedMailData());
         }
       })
       .catch((err) => console.log(err))
       .finally(() => {
         setLoading(false);
       });
+    return () => {
+      dispatch(removeSelectedMailData());
+    };
   }, []);
+  const handleSetCurrThread = (data) => {
+    setCurrThread(data.data);
+    console.log("setting curr thread is", data.data);
+  };
   useEffect(() => {
-    console.log("cur the", storeData);
-  }, [currThread]);
-  // useEffect(() => {
-  //   console.log("state of allmails ---> ", allMails);
-  // }, [allMails]);
-  // const DateFormater = (timestmp) => {
-  //   const date = new Date(timestmp);
-  //   const monthNames = [
-  //     "January",
-  //     "February",
-  //     "March",
-  //     "April",
-  //     "May",
-  //     "June",
-  //     "July",
-  //     "August",
-  //     "September",
-  //     "October",
-  //     "November",
-  //     "December",
-  //   ];
-  //   const month = monthNames[date.getMonth()];
-  //   const day = date.getDate();
-  //   const trimmedMonth = month.substring(0, 3);
-  //   const formattedDate = `${trimmedMonth} ${day}`;
-  //   return formattedDate;
-  // };
+    console.log(`calling thread with id ${currThreadId}`);
+    if (currThreadId) {
+      setThreadLoading(true);
+      handleGetAllcurrThreadData(currThreadId)
+        .then((resp) => handleSetCurrThread(resp))
+        .catch((err) => console.log(err))
+        .finally(() => {
+          setThreadLoading(false);
+        });
+    }
+  }, [currThreadId]);
+  useEffect(() => {
+    console.log(`full thread show ---`, showFullThread);
+  }, [showFullThread]);
+
   const EmptyScreen = () => {
     return (
       <EmptyMessageContainer>
@@ -417,9 +459,10 @@ export default function OneBox() {
       </EmptyMessageContainer>
     );
   };
-  const handleSetCurrentThread = (user, thread) => {
+  const handleSetCurrentThreadId = (user, threadId) => {
+    console.log("clicked ", threadId, user);
     dispatch(setSelectedMailData(user));
-    setCurrThread(thread);
+    setCurrThreadId(threadId);
   };
   const getDataFromStore = () => {
     const { fromEmail, fromName } = storeData.selectedMailBoxSlice;
@@ -430,33 +473,35 @@ export default function OneBox() {
       </>
     );
   };
-  const getThreadHeader = () => {
-    const { fromEmail, toEmail } = storeData.selectedMailBoxSlice;
-    return (
-      <>
-        <ThreadBoxHeaderLeft>
-          <Text>Hello world</Text>
-          <DarkTextTwo>from: {fromEmail}</DarkTextTwo>
-          <DarkTextTwo>to: {toEmail}</DarkTextTwo>
-        </ThreadBoxHeaderLeft>
-        <ThreadBoxHeaderRight>
-          <DarkTextThree>20 june 2022:9:16AM</DarkTextThree>
-        </ThreadBoxHeaderRight>
-      </>
-    );
+  const toggleShowFullThread = () => {
+    setShowFullThread((show) => !show);
   };
-  const getThreadBody = () => {
-    const { fromEmail, toName, body } = storeData.selectedMailBoxSlice;
-    const getHtml = (body) => {
-      return { __html: body };
-    };
-    return (
-      <>
-        <Text type="two">Hi {toName || "Sir"}</Text>
-        <ThreadMessage dangerouslySetInnerHTML={getHtml(body)} />
-      </>
-    );
-  };
+  // const getThreadHeader = (threadData) => {
+  //   const { fromEmail, toEmail, subject } = threadData;
+  //   return (
+  //     <>
+  //       <ThreadBoxHeaderLeft>
+  //         <TextHighWidth>${subject}</TextHighWidth>
+  //         <DarkTextTwo>from: {fromEmail}</DarkTextTwo>
+  //         <DarkTextTwo>to: {toEmail}</DarkTextTwo>
+  //       </ThreadBoxHeaderLeft>
+  //       <ThreadBoxHeaderRight>
+  //         <DarkTextThree>20 june 2022:9:16AM</DarkTextThree>
+  //       </ThreadBoxHeaderRight>
+  //     </>
+  //   );
+  // };
+  // const getThreadBody = (threadData) => {
+  //   const { body } = threadData;
+  //   const getHtml = (body) => {
+  //     return { __html: body };
+  //   };
+  //   return (
+  //     <>
+  //       <ThreadMessage dangerouslySetInnerHTML={getHtml(body)} />
+  //     </>
+  //   );
+  // };
   // const Mail = ({ fromEmail, subject, sentAt }) => (
   //   <MailContainer>
   //     <MailNameContainer>
@@ -527,7 +572,7 @@ export default function OneBox() {
             sentAt={m.sentAt}
             thread={m.threadId}
             id={m.id}
-            setCurrentThread={(thread) => handleSetCurrentThread(m, thread)}
+            setCurrentThreadId={() => handleSetCurrentThreadId(m, m.threadId)}
           />
         ))}
       </AllMailsContainer>
@@ -558,13 +603,40 @@ export default function OneBox() {
             <TimeLineDateContainer>Today</TimeLineDateContainer>
           </TimeLineDate>
         </DividerContainer>
-        <ThreadMessagesContainer>
-          <SingleThreadMessageBox>
-            <SingleThreadBoxHeader>{getThreadHeader()}</SingleThreadBoxHeader>
-            <SingleThreadBoxBody>{getThreadBody()}</SingleThreadBoxBody>
-          </SingleThreadMessageBox>
-        </ThreadMessagesContainer>
+        {threadLoading ? (
+          <SpinnerBackground>
+            <SpinnerContainer>
+              <Spinner />
+            </SpinnerContainer>
+          </SpinnerBackground>
+        ) : !showFullThread ? (
+          <>
+            <ThreadMessagesContainer key={currThread[0].id}>
+              <ThreadBox data={currThread[0]} />
+            </ThreadMessagesContainer>
+            {currThread.length > 1 && (
+              <DividerContainer>
+                <Divider></Divider>
+                <TimeLineDate onClick={() => toggleShowFullThread()}>
+                  <TimeLineDateContainer>{`View All ${currThread.length} replies `}</TimeLineDateContainer>
+                </TimeLineDate>
+              </DividerContainer>
+            )}
+          </>
+        ) : (
+          currThread.map((t) => {
+            return (
+              <ThreadMessagesContainer key={t.id}>
+                <ThreadBox data={t} />
+              </ThreadMessagesContainer>
+            );
+          })
+        )}
       </AllThreadsContainer>
+      <LeadActivitiesContainer>
+        <LeadDetails />
+        <Activities />
+      </LeadActivitiesContainer>
     </ScreenNonEmpty>
   );
 }

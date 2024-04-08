@@ -18,36 +18,42 @@ const darkModeSlice = createSlice({
     },
   },
 });
+const initialSelectedMailBoxData = {
+  id: 0,
+  fromName: "",
+  fromEmail: "",
+  toName: "",
+  toEmail: "",
+  cc: null,
+  bcc: null,
+  threadId: 0,
+  messageId: "",
+  inReplyTo: "",
+  references: "",
+  subject: "",
+  body: "",
+  isRead: true,
+  folder: "",
+  uid: 0,
+  sentAt: "",
+  archivedAt: null,
+  createdAt: "",
+  updatedAt: "",
+  deletedAt: null,
+};
 const selectedMailBoxSlice = createSlice({
   name: "selectedMailData",
-  initialState: {
-    id: 0,
-    fromName: "",
-    fromEmail: "",
-    toName: "",
-    toEmail: "",
-    cc: null,
-    bcc: null,
-    threadId: 1,
-    messageId: "",
-    inReplyTo: "",
-    references: "",
-    subject: "",
-    body: "",
-    isRead: true,
-    folder: "",
-    uid: 0,
-    sentAt: "",
-    archivedAt: null,
-    createdAt: "",
-    updatedAt: "",
-    deletedAt: null,
-  },
+  initialState: initialSelectedMailBoxData,
   reducers: {
     setSelectedMailData: (state, action) => {
       return {
         ...state,
         ...action.payload,
+      };
+    },
+    removeSelectedMailData: (state, action) => {
+      return {
+        initialSelectedMailBoxData,
       };
     },
   },
@@ -65,5 +71,6 @@ const store = configureStore({
 
 export const { setTab } = activeTabSlice.actions;
 export const { setDarkMode } = darkModeSlice.actions;
-export const { setSelectedMailData } = selectedMailBoxSlice.actions;
+export const { setSelectedMailData, removeSelectedMailData } =
+  selectedMailBoxSlice.actions;
 export default store;
