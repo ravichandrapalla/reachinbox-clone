@@ -1,9 +1,10 @@
 import { styled } from "styled-components";
 import CampaignLogo from "../../assects/CampaignIcon.png";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setSelectedMailData } from "../../redux/store";
 
 const MailContainer = styled.div`
+  border-left: ${(props) => props.selected && "3px solid #5C7CFA"};
   border-bottom: 1px solid #33383f;
   padding: 0.5rem;
   cursor: pointer;
@@ -77,8 +78,8 @@ export const Mail = ({
   sentAt,
   thread,
   setCurrentThread,
+  id,
 }) => {
-  const dispatch = useDispatch();
   const DateFormater = (timestmp) => {
     const date = new Date(timestmp);
     const monthNames = [
@@ -101,9 +102,12 @@ export const Mail = ({
     const formattedDate = `${trimmedMonth} ${day}`;
     return formattedDate;
   };
-
+  const storeData = useSelector((state) => state);
   return (
-    <MailContainer onClick={() => setCurrentThread(thread)}>
+    <MailContainer
+      selected={storeData.selectedMailBoxSlice.id === id}
+      onClick={() => setCurrentThread(thread)}
+    >
       <MailNameContainer>
         <MailUser>
           <Text>{fromEmail}</Text>

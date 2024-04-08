@@ -143,6 +143,39 @@ const TimeLineDate = styled.div`
   top: 50%;
   transform: translate(-50%, -50%);
 `;
+const ThreadMessagesContainer = styled.div`
+  padding: 1.2rem;
+  border-radius: 5px;
+`;
+const SingleThreadMessageBox = styled.div`
+  border: 1px solid #343a40;
+  border-radius: 5px;
+  padding: 0.8rem;
+  height: 13rem;
+  overflow-y: auto;
+  background-color: #1f1f1f;
+`;
+const SingleThreadBoxHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+const SingleThreadBoxBody = styled.div`
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  padding-top: 1rem;
+  row-gap: 0.5rem;
+`;
+const ThreadBoxHeaderLeft = styled.div`
+  display: flex;
+  flex-direction: column;
+  row-gap: 0.5rem;
+  text-align: left;
+`;
+const ThreadBoxHeaderRight = styled.div`
+  display: flex;
+  align-items: flex-start;
+`;
 
 const AllMailsHeader = styled.section`
   width: 100%;
@@ -185,7 +218,7 @@ const NumberOfMails = styled.span`
 const Text = styled.span`
   color: #fff;
   font-size: 0.8rem;
-  font-weight: 600;
+  font-weight: ${(props) => (props.type = "two" ? 500 : 600)};
   width: 85px;
 
   overflow: hidden;
@@ -193,10 +226,27 @@ const Text = styled.span`
   text-overflow: ellipsis;
   font-family: "Open Sans", sans-serif;
 `;
+const ThreadMessage = styled.div`
+  color: #fff;
+  font-size: 0.8rem;
+  overflow-y: auto;
+`;
 
 const DarkText = styled.span`
   color: #7f7f7f;
   font-size: 0.75rem;
+  font-weight: 400;
+  font-family: "Open Sans", sans-serif;
+`;
+const DarkTextTwo = styled.span`
+  color: #aeaeae;
+  font-size: 0.75rem;
+  font-weight: 400;
+  font-family: "Open Sans", sans-serif;
+`;
+const DarkTextThree = styled.span`
+  color: #7f7f7f;
+  font-size: 0.8rem;
   font-weight: 400;
   font-family: "Open Sans", sans-serif;
 `;
@@ -206,6 +256,7 @@ const ReloadLogoContainer = styled.div`
   background-color: #2f3030;
   padding: 0.5rem;
   border-radius: 0.5rem;
+  border: 1px solid #343a40;
   cursor: pointer;
 `;
 const CountContainer = styled.span`
@@ -314,8 +365,10 @@ export default function OneBox() {
       .then((data) => {
         if (data?.data) {
           setAllMails(data.data);
+          dispatch(setSelectedMailData(data.data[0]));
         } else {
           setAllMails([]);
+          dispatch(setSelectedMailData({}));
         }
       })
       .catch((err) => console.log(err))
@@ -374,6 +427,33 @@ export default function OneBox() {
       <>
         <Text>{fromName}</Text>
         <DarkText>{fromEmail}</DarkText>
+      </>
+    );
+  };
+  const getThreadHeader = () => {
+    const { fromEmail, toEmail } = storeData.selectedMailBoxSlice;
+    return (
+      <>
+        <ThreadBoxHeaderLeft>
+          <Text>Hello world</Text>
+          <DarkTextTwo>from: {fromEmail}</DarkTextTwo>
+          <DarkTextTwo>to: {toEmail}</DarkTextTwo>
+        </ThreadBoxHeaderLeft>
+        <ThreadBoxHeaderRight>
+          <DarkTextThree>20 june 2022:9:16AM</DarkTextThree>
+        </ThreadBoxHeaderRight>
+      </>
+    );
+  };
+  const getThreadBody = () => {
+    const { fromEmail, toName, body } = storeData.selectedMailBoxSlice;
+    const getHtml = (body) => {
+      return { __html: body };
+    };
+    return (
+      <>
+        <Text type="two">Hi {toName || "Sir"}</Text>
+        <ThreadMessage dangerouslySetInnerHTML={getHtml(body)} />
       </>
     );
   };
@@ -446,6 +526,7 @@ export default function OneBox() {
             subject={m.subject}
             sentAt={m.sentAt}
             thread={m.threadId}
+            id={m.id}
             setCurrentThread={(thread) => handleSetCurrentThread(m, thread)}
           />
         ))}
@@ -477,6 +558,12 @@ export default function OneBox() {
             <TimeLineDateContainer>Today</TimeLineDateContainer>
           </TimeLineDate>
         </DividerContainer>
+        <ThreadMessagesContainer>
+          <SingleThreadMessageBox>
+            <SingleThreadBoxHeader>{getThreadHeader()}</SingleThreadBoxHeader>
+            <SingleThreadBoxBody>{getThreadBody()}</SingleThreadBoxBody>
+          </SingleThreadMessageBox>
+        </ThreadMessagesContainer>
       </AllThreadsContainer>
     </ScreenNonEmpty>
   );
