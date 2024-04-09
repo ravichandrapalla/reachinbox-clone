@@ -40,7 +40,7 @@ const ScreenEmpty = styled.div`
 
 const ScreenNonEmpty = styled.div`
   background: transparent;
-  height: 100%;
+  height: 100vh;
   width: 100%;
   display: flex;
   /* justify-content: center;
@@ -104,6 +104,8 @@ const AllMailsContainer = styled.section`
   height: 85vh;
   padding: 1.2rem;
   border-right: 1px solid #33383f;
+  flex: 1;
+  overflow-y: auto;
 `;
 const AllThreadsContainer = styled.section`
   width: 50rem;
@@ -115,6 +117,8 @@ const AllThreadsContainer = styled.section`
   height: 90vh;
   position: relative;
   border: 1px solid #33383f;
+  flex: 2;
+  overflow-y: auto;
 `;
 const LeadActivitiesContainer = styled.section`
   width: 20rem;
@@ -126,6 +130,8 @@ const LeadActivitiesContainer = styled.section`
   padding: 1rem;
   border-left: 1px solid #33383f;
   gap: 1.5rem;
+  flex: 1;
+  overflow-y: auto;
 `;
 const AllThreadsHeader = styled.section`
   /* padding: 1rem; */
