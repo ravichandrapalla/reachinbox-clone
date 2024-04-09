@@ -38,7 +38,9 @@ const CloseButton = styled.button`
   cursor: pointer;
 `;
 const ModalHeader = styled.header`
-  background-color: #41464b;
+  /* background-color: #41464b; */
+  background-color: ${(props) =>
+    props.dark === false ? "#ffffff" : "#41464b"};
   display: flex;
   /* padding: 10px 16px; */
   padding: 10px 5px 10px 30px;
@@ -46,7 +48,8 @@ const ModalHeader = styled.header`
   align-items: center;
   align-content: flex-start;
   width: 100%;
-  border: 1px solid #23272c;
+  border: ${(props) =>
+    props.dark === false ? "1px solid white" : "1px solid #23272c"};
 `;
 const TextTypeOne = styled.span`
   font-size: 0.75rem;
@@ -58,17 +61,20 @@ const TextTypeOne = styled.span`
 const ModalBody = styled.section`
   display: flex;
   flex-direction: column;
-  background: #1f1f1f;
+  /* background: #1f1f1f; */
+  background: ${(props) => (props.dark === false ? "#1f1f1f" : "#ffffff")};
   height: 80%;
 `;
 const ModalBodyRow = styled.div`
   border-bottom: 1px solid #34383d;
   text-align: left;
   padding: 8px 30px;
-  background-color: #1f1f1f;
+  background-color: ${(props) =>
+    props.dark === false ? "#ffffff" : "#1f1f1f"};
   color: white;
 `;
 const ModalBodyTextArea = styled.textarea`
+  border: none;
   padding: 1rem;
   color: #636970;
   font-family: "Open Sans", sans-serif;
@@ -77,7 +83,7 @@ const ModalBodyTextArea = styled.textarea`
   text-align: left;
   padding-left: 30px;
   height: 100%;
-  background: #1f1f1f;
+  background: ${(props) => (props.dark === false ? "#ffffff" : "#1f1f1f")};
 `;
 
 const ModalFooter = styled.footer`
@@ -85,7 +91,7 @@ const ModalFooter = styled.footer`
   padding: 6px 12px 6px 12px;
   display: flex;
   column-gap: 1rem;
-  /* background: transparent; */
+  background: ${(props) => (props.dark === false ? "#ffffff" : "#1f1f1f")};
 `;
 const SendButton = styled.button`
   background: linear-gradient(to right, #4b63dd 100%, #0524bf 99%);
@@ -128,9 +134,16 @@ const NewText = styled.span`
   font-weight: 400;
   font-size: 12px;
 `;
+const NewTextTwo = styled.span`
+  color: ${(props) => (props.dark === false ? "#41464b" : "#ffffff")};
+  font-family: "Open Sans", sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+`;
 
 export const Modal = ({ isOpen, onClose, send }) => {
   const storeData = useSelector((state) => state);
+  const dark = useSelector((store) => store.darkModeSlice.isDark);
   // const {fromEmail, toEmail} = storeData.selectedMailBoxSlice;
   const [fromEmail, setFromEmail] = useState("");
   const [toEmail, setToEmail] = useState("");
@@ -177,27 +190,30 @@ export const Modal = ({ isOpen, onClose, send }) => {
 
   return (
     <ModalContainer isOpen={isOpen}>
-      <ModalHeader>
+      <ModalHeader dark={dark}>
         <TextTypeOne>Reply</TextTypeOne>
         <CloseButton onClick={onClose}>
           <IoClose size={24} color="white" />
         </CloseButton>
       </ModalHeader>
-      <ModalBody>
-        <ModalBodyRow>
-          <NewText>to:</NewText> {`${fromEmail}`}
+      <ModalBody dark={dark}>
+        <ModalBodyRow dark={dark}>
+          <NewText>to:</NewText>{" "}
+          <NewTextTwo dark={dark}>{`${fromEmail}`}</NewTextTwo>
         </ModalBodyRow>
-        <ModalBodyRow>
-          <NewText>from:</NewText> {`${toEmail}`}
+        <ModalBodyRow dark={dark}>
+          <NewText>from:</NewText>{" "}
+          <NewTextTwo dark={dark}>{`${toEmail}`}</NewTextTwo>
         </ModalBodyRow>
-        <ModalBodyRow>
-          <NewText>Subject:</NewText> {`${subject}`}
+        <ModalBodyRow dark={dark}>
+          <NewText>Subject:</NewText>{" "}
+          <NewTextTwo dark={dark}>{`${subject}`}</NewTextTwo>
         </ModalBodyRow>
-        <ModalBodyTextArea onChange={(e) => handleTextChange(e)}>
+        <ModalBodyTextArea dark={dark} onChange={(e) => handleTextChange(e)}>
           {text}
         </ModalBodyTextArea>
       </ModalBody>
-      <ModalFooter>
+      <ModalFooter dark={dark}>
         <SendButton onClick={handleReply}>
           <TextTypeTwo>Send</TextTypeTwo>
           <img
