@@ -1,4 +1,5 @@
 import { styled } from "styled-components";
+import { useSelector } from "react-redux";
 
 const ThreadMessagesContainer = styled.div`
   /* padding: 1.2rem; */
@@ -11,7 +12,8 @@ const SingleThreadMessageBox = styled.div`
   padding: 0.8rem;
   height: 13rem;
   overflow-y: auto;
-  background-color: initial;
+  /* background-color: initial; */
+  background-color: ${(props) => (props.dark ? "initial" : "#ffffff")};
 `;
 const SingleThreadBoxHeader = styled.div`
   display: flex;
@@ -37,7 +39,8 @@ const ThreadBoxHeaderRight = styled.div`
   align-items: flex-start;
 `;
 const DarkTextTwo = styled.span`
-  color: #aeaeae;
+  color: ${(props) => (props.dark ? "#aeaeae" : "initial")};
+  /* color: #aeaeae; */
   font-size: 0.75rem;
   font-weight: 400;
   font-family: "Open Sans", sans-serif;
@@ -49,7 +52,7 @@ const DarkTextThree = styled.span`
   font-family: "Open Sans", sans-serif;
 `;
 const TextHighWidth = styled.span`
-  color: #fff;
+  color: ${(props) => (props.dark ? "#ffffff" : "initial")};
   font-size: 0.8rem;
   font-weight: ${(props) => (props.type = "two" ? 500 : 600)};
   width: 300px;
@@ -60,19 +63,20 @@ const TextHighWidth = styled.span`
   font-family: "Open Sans", sans-serif;
 `;
 const ThreadMessage = styled.div`
-  color: #fff;
+  color: ${(props) => (props.dark ? "#ffffff" : "initial")};
   font-size: 0.8rem;
   overflow-y: auto;
 `;
 export const ThreadBox = ({ data }) => {
+  const dark = useSelector((store) => store.darkModeSlice.isDark);
   const getThreadHeader = (threadData) => {
     const { fromEmail, toEmail, subject } = threadData;
     return (
       <>
         <ThreadBoxHeaderLeft>
-          <TextHighWidth>${subject}</TextHighWidth>
-          <DarkTextTwo>from: {fromEmail}</DarkTextTwo>
-          <DarkTextTwo>to: {toEmail}</DarkTextTwo>
+          <TextHighWidth dark={dark}>${subject}</TextHighWidth>
+          <DarkTextTwo dark={dark}>from: {fromEmail}</DarkTextTwo>
+          <DarkTextTwo dark={dark}>to: {toEmail}</DarkTextTwo>
         </ThreadBoxHeaderLeft>
         <ThreadBoxHeaderRight>
           <DarkTextThree>20 june 2022:9:16AM</DarkTextThree>
@@ -87,16 +91,20 @@ export const ThreadBox = ({ data }) => {
     };
     return (
       <>
-        <ThreadMessage dangerouslySetInnerHTML={getHtml(body)} />
+        <ThreadMessage dark={dark} dangerouslySetInnerHTML={getHtml(body)} />
       </>
     );
   };
   return (
     <>
       <ThreadMessagesContainer>
-        <SingleThreadMessageBox>
-          <SingleThreadBoxHeader>{getThreadHeader(data)}</SingleThreadBoxHeader>
-          <SingleThreadBoxBody>{getThreadBody(data)}</SingleThreadBoxBody>
+        <SingleThreadMessageBox dark={dark}>
+          <SingleThreadBoxHeader dark={dark}>
+            {getThreadHeader(data)}
+          </SingleThreadBoxHeader>
+          <SingleThreadBoxBody dark={dark}>
+            {getThreadBody(data)}
+          </SingleThreadBoxBody>
         </SingleThreadMessageBox>
       </ThreadMessagesContainer>
     </>
