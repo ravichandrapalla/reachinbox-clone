@@ -21,6 +21,7 @@ import { toBeChecked } from "@testing-library/jest-dom/dist/matchers";
 import { ThreadBox } from "../components/OneBox/ThreadBox";
 import LeadDetails from "../components/OneBox/LeadDetails";
 import Activities from "../components/OneBox/Activities";
+import { Modal } from "../components/OneBox/ReplyModal";
 
 const ScreenEmpty = styled.div`
   background: transparent;
@@ -101,12 +102,12 @@ const AllMailsContainer = styled.section`
 `;
 const AllThreadsContainer = styled.section`
   width: 50rem;
-  height: 4rem;
+  /* height: 4rem; */
   display: flex;
   flex-direction: column;
   background: transparent;
   overflow: auto;
-  height: 85vh;
+  height: 90vh;
   position: relative;
   border: 1px solid #33383f;
 `;
@@ -384,12 +385,19 @@ const TimeLineDateContainer = styled.div`
   font-size: 0.8rem;
   border-radius: 5px;
 `;
-const ViewButton = styled.button`
-  background-color: #4285f4;
+const ReplyButton = styled.button`
+  background: linear-gradient(to right, #4b63dd 100%, #0524bf 99%);
+  width: 8rem;
+  height: 2.2rem;
   color: white;
-  padding: 8px 16px;
+  margin-left: 50px;
   border: none;
-  border-radius: 4px;
+  border-radius: 0.25rem;
+  position: fixed;
+  bottom: 35px;
+  visibility: ${(props) => (props.loading ? "hidden" : "visible")};
+
+  z-index: 10;
   cursor: pointer;
 `;
 export default function OneBox() {
@@ -400,6 +408,7 @@ export default function OneBox() {
   const [currThread, setCurrThread] = useState([]);
   const [threadLoading, setThreadLoading] = useState(false);
   const [showFullThread, setShowFullThread] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   const dispatch = useDispatch();
   // console.log(storeData);
@@ -424,6 +433,20 @@ export default function OneBox() {
       });
     return () => {
       dispatch(removeSelectedMailData());
+    };
+  }, []);
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === "r" || event.key === "R") {
+        handleReplyClick();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
     };
   }, []);
   const handleSetCurrThread = (data) => {
@@ -458,6 +481,13 @@ export default function OneBox() {
         </TextContainer>
       </EmptyMessageContainer>
     );
+  };
+  const handleReplyClick = () => {
+    setShowModal((show) => !show);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
   };
   const handleSetCurrentThreadId = (user, threadId) => {
     console.log("clicked ", threadId, user);
@@ -632,6 +662,11 @@ export default function OneBox() {
             );
           })
         )}
+
+        <ReplyButton loading={threadLoading} onClick={handleReplyClick}>
+          Reply
+        </ReplyButton>
+        <Modal isOpen={showModal} onClose={handleCloseModal} />
       </AllThreadsContainer>
       <LeadActivitiesContainer>
         <LeadDetails />
