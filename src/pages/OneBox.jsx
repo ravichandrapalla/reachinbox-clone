@@ -245,7 +245,8 @@ const NumberOfMails = styled.span`
   font-family: "Open Sans", sans-serif;
 `;
 const Text = styled.span`
-  color: "#fff";
+  /* color: "#fff"; */
+  color: ${(props) => (props.dark === false ? "#1f1f1f" : "#ffffff")};
   font-size: 0.8rem;
   font-weight: ${(props) => (props.type = "two" ? 500 : 600)};
   width: 85px;
@@ -624,11 +625,12 @@ export default function OneBox() {
           <Containerthree>
             <ReplyCountDiv>
               <CountContainer>26</CountContainer>
-              <Text>New Replies</Text>
+              <Text dark={dark}>New Replies</Text>
             </ReplyCountDiv>
 
             <ReplyCountDiv>
-              <Text>Newest</Text> <IoIosArrowDown />
+              <Text dark={dark}>Newest</Text>{" "}
+              <IoIosArrowDown color={dark ? "#fff" : "#1f1f1f"} />
             </ReplyCountDiv>
           </Containerthree>
         </AllMailsHeader>

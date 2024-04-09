@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { useSelector } from "react-redux";
 
 const Section = styled.section`
   background-color: transparent;
@@ -29,7 +30,8 @@ const BodyRow = styled.div`
   justify-content: space-between;
 `;
 const Title = styled.span`
-  color: #ffffff;
+  color: ${(props) => (props.dark === false ? "#1f1f1f" : "#ffffff")};
+  /* color: #ffffff; */
   font-weight: 400;
   font-size: 12px;
   font-family: "Inter", sans-serif;
@@ -44,28 +46,29 @@ const Description = styled.span`
 `;
 
 export default function LeadDetails() {
+  const dark = useSelector((store) => store.darkModeSlice.isDark);
   return (
     <Section>
       <SectionHeader>Lead Details</SectionHeader>
       <SectionBody>
         <BodyRow>
-          <Title>Name</Title>
+          <Title dark={dark}>Name</Title>
           <Description>Orlando</Description>
         </BodyRow>
         <BodyRow>
-          <Title>Contact No</Title>
+          <Title dark={dark}>Contact No</Title>
           <Description>+54-9062827869</Description>
         </BodyRow>
         <BodyRow>
-          <Title>Email ID</Title>
+          <Title dark={dark}>Email ID</Title>
           <Description>orlando@gmail.com</Description>
         </BodyRow>
         <BodyRow>
-          <Title>Linkedin</Title>
+          <Title dark={dark}>Linkedin</Title>
           <Description>linkedin.com/in/timvadde/</Description>
         </BodyRow>
         <BodyRow>
-          <Title>Company Name</Title>
+          <Title dark={dark}>Company Name</Title>
           <Description>Reachinbox</Description>
         </BodyRow>
       </SectionBody>

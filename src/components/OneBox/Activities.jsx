@@ -3,6 +3,7 @@ import SendIcon from "../../assects/send.png";
 import Email from "../../assects/email.png";
 
 import DraftIcon from "../../assects/drafts.png";
+import { useSelector } from "react-redux";
 
 const Section = styled.section`
   background-color: transparent;
@@ -46,14 +47,14 @@ const BodyTitle = styled.span`
   font-weight: 600;
   font-size: 15px;
   font-family: "Open Sans", sans-serif;
-  color: #ffffff;
+  color: ${(props) => (props.dark === false ? "#1f1f1f" : "#ffffff")};
 `;
 const BriefHolder = styled.div`
   padding: 0rem 0.7rem;
   border-right: ${(props) => props.position === "left" && "1px solid #403f3f"};
 `;
 const BriefText = styled.span`
-  color: #ffffff;
+  color: ${(props) => (props.dark === false ? "#1f1f1f" : "#ffffff")};
   font-weight: 400;
   font-size: 12px;
   font-family: "Inter", sans-serif;
@@ -101,7 +102,7 @@ const TimelineHead = styled.span`
   font-weight: 600;
   font-size: 13px;
   font-family: "Open Sans", sans-serif;
-  color: #ffffff;
+  color: ${(props) => (props.dark === false ? "#1f1f1f" : "#ffffff")};
 `;
 const TimelineTailOne = styled.span`
   font-weight: 400;
@@ -129,18 +130,19 @@ const Trick = styled.div`
 `;
 
 export default function Activities() {
+  const dark = useSelector((store) => store.darkModeSlice.isDark);
   return (
     <Section>
       <SectionHeader>Activities</SectionHeader>
       <SectionBody>
         <ModularDiv>
-          <BodyTitle>Campaign Name</BodyTitle>
+          <BodyTitle dark={dark}>Campaign Name</BodyTitle>
           <BriefContainer>
             <BriefHolder position="left">
-              <BriefText>3 Steps</BriefText>
+              <BriefText dark={dark}>3 Steps</BriefText>
             </BriefHolder>
             <BriefHolder>
-              <BriefText>5 Days in Sequence</BriefText>
+              <BriefText dark={dark}>5 Days in Sequence</BriefText>
             </BriefHolder>
           </BriefContainer>
         </ModularDiv>
@@ -152,7 +154,7 @@ export default function Activities() {
             <TimelineLine />
           </Timeline>
           <TimelineContainer>
-            <TimelineHead>Step 1: Email</TimelineHead>
+            <TimelineHead dark={dark}>Step 1: Email</TimelineHead>
             <BriefContainer>
               <img src={SendIcon} alt="send" />
               <TimelineTailOne>Sent</TimelineTailOne>
@@ -168,7 +170,7 @@ export default function Activities() {
             <TimelineLine />
           </Timeline>
           <TimelineContainer>
-            <TimelineHead>Step 1: Email</TimelineHead>
+            <TimelineHead dark={dark}>Step 1: Email</TimelineHead>
             <BriefContainer>
               <img src={SendIcon} alt="send" />
               <TimelineTailOne>Sent</TimelineTailOne>
@@ -184,7 +186,7 @@ export default function Activities() {
             <TimelineLine number="last" />
           </Timeline>
           <TimelineContainer>
-            <TimelineHead>Step 1: Email</TimelineHead>
+            <TimelineHead dark={dark}>Step 1: Email</TimelineHead>
             <BriefContainer>
               <img src={SendIcon} alt="send" />
               <TimelineTailOne>Sent</TimelineTailOne>
