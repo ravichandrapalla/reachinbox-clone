@@ -31,7 +31,8 @@ const TextTwo = styled.span`
   font-weight: 400;
   font-size: 12px;
   font-family: sans-serif;
-  color: #e1e0e0;
+  /* color: #e1e0e0; */
+  color: ${(props) => (props.dark ? "#e1e0e0" : "black")};
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -50,12 +51,13 @@ const TagContainer = styled.div`
 `;
 const Tag = styled.span`
   padding: 0.1rem;
-  color: #fff;
+  color: ${(props) => (props.dark ? "#fff" : "black")};
   font-size: 0.8rem;
   background-color: initial;
 `;
 const Text = styled.span`
-  color: #fff;
+  /* color: #fff; */
+  color: ${(props) => (props.dark ? "#fff" : "black")};
   font-size: 0.8rem;
   font-weight: 600;
   width: 85px;
@@ -104,6 +106,7 @@ export const Mail = ({
     return formattedDate;
   };
   const storeData = useSelector((state) => state);
+  const dark = useSelector((store) => store.darkModeSlice.isDark);
   return (
     <MailContainer
       selected={storeData.selectedMailBoxSlice.id === id}
@@ -111,16 +114,22 @@ export const Mail = ({
     >
       <MailNameContainer>
         <MailUser>
-          <Text>{fromEmail}</Text>
-          <TextTwo>{subject}</TextTwo>
+          <Text dark={dark}>{fromEmail}</Text>
+          <TextTwo dark={dark}>{subject}</TextTwo>
         </MailUser>
         <DateContainer>
           <DarkText>{DateFormater(sentAt)}</DarkText>
         </DateContainer>
       </MailNameContainer>
       <TagContainer>
-        <img src={CampaignLogo} alt="campaign" width={15} height={15} />
-        <Tag>Campaign Name</Tag>
+        <img
+          src={CampaignLogo}
+          alt="campaign"
+          width={15}
+          height={15}
+          color={dark ? "#fff" : "white"}
+        />
+        <Tag dark={dark}>Campaign Name</Tag>
       </TagContainer>
     </MailContainer>
   );

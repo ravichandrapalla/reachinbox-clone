@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { DarkModeToggle } from "./DarkModeToggle";
 import { IoIosArrowDown } from "react-icons/io";
+import { useSelector } from "react-redux";
 
 const StyledHeaderMenu = styled.ul`
   display: flex;
@@ -24,10 +25,11 @@ const Profile = styled.div`
   cursor: pointer;
 `;
 const Text = styled.span`
-  color: #fff;
+  color: ${(props) => (props.isDark ? "#fff" : "#1f1f1f")};
 `;
 export function HeaderMenu() {
   const navigate = useNavigate();
+  const dark = useSelector((store) => store.darkModeSlice.isDark);
   return (
     <StyledHeaderMenu>
       {/* <li>
@@ -40,8 +42,8 @@ export function HeaderMenu() {
       </ListItems>
       <ListItems>
         <Profile>
-          <Text>My Name</Text>
-          <IoIosArrowDown color="white" />
+          <Text isDark={dark}>My Name</Text>
+          <IoIosArrowDown color={dark ? "#fff" : "#1f1f1f"} />
         </Profile>
       </ListItems>
       {/* <li>

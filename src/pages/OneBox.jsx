@@ -239,13 +239,13 @@ const InboxDataContainer = styled.div`
   column-gap: 0.2rem;
 `;
 const NumberOfMails = styled.span`
-  color: #fff;
+  color: ${(props) => (props.isDark ? "#fff" : "#1f1f1f")};
   font-size: 0.875rem;
   font-weight: 700;
   font-family: "Open Sans", sans-serif;
 `;
 const Text = styled.span`
-  color: #fff;
+  color: "#fff";
   font-size: 0.8rem;
   font-weight: ${(props) => (props.type = "two" ? 500 : 600)};
   width: 85px;
@@ -360,7 +360,8 @@ const TextTwo = styled.span`
   font-weight: 400;
   font-size: 12px;
   font-family: sans-serif;
-  color: #e1e0e0;
+  /* color: #e1e0e0; */
+  color: ${(props) => (props.dark ? "#e1e0e0" : "#1f1f1f")};
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -421,6 +422,7 @@ export default function OneBox() {
   const [threadLoading, setThreadLoading] = useState(false);
   const [showFullThread, setShowFullThread] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const dark = useSelector((store) => store.darkModeSlice.isDark);
 
   const dispatch = useDispatch();
   // console.log(storeData);
@@ -606,13 +608,13 @@ export default function OneBox() {
                 <IoIosArrowDown color="#4285f4" />
               </MailLegendContainer>
               <InboxDataContainer>
-                <NumberOfMails>25/25</NumberOfMails>
+                <NumberOfMails isDark={dark}>25/25</NumberOfMails>
                 <DarkText>Inboxes selected</DarkText>
               </InboxDataContainer>
             </ContainerOne>
             <ContainerTwo>
               <ReloadLogoContainer>
-                <IoReload color="white" />
+                <IoReload color={dark ? "#fff" : "#1f1f1f"} />
               </ReloadLogoContainer>
             </ContainerTwo>
           </CompoundContainee>
@@ -650,16 +652,16 @@ export default function OneBox() {
           <AllThreadsHeaderRightSection>
             <RightDetailsOne>
               <img src={Sun} alt="sun" width={20} height={20} />
-              <TextTwo>Meeting Completed</TextTwo>
-              <IoIosArrowDown color="white" />
+              <TextTwo dark={dark}>Meeting Completed</TextTwo>
+              <IoIosArrowDown color={dark ? "#e1e0e0" : "#1f1f1f"} />
             </RightDetailsOne>
             <RightDetailsOne>
-              <TextTwo>Move</TextTwo>
-              <IoIosArrowDown color="white" />
+              <TextTwo dark={dark}>Move</TextTwo>
+              <IoIosArrowDown color={dark ? "#e1e0e0" : "#1f1f1f"} />
             </RightDetailsOne>
 
             <ReloadLogoContainer>
-              <SlOptions color="white" />
+              <SlOptions color={dark ? "#e1e0e0" : "#1f1f1f"} />
             </ReloadLogoContainer>
           </AllThreadsHeaderRightSection>
         </AllThreadsHeader>

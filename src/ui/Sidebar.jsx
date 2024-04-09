@@ -1,9 +1,11 @@
 import styled from "styled-components";
 import OneBoxLogo from "../assects/OneBoxLogo.png";
 import MainNav from "./MainNav";
+import { useSelector } from "react-redux";
 
 const StyledSidebar = styled.aside`
-  background-color: #101113;
+  /* background-color: #101113; */
+  background-color: ${(props) => (props.dark ? "#101113" : "#fff")};
   /* padding: 3.2rem 2.4rem; */
   width: 3.5rem;
 
@@ -22,8 +24,9 @@ const LogoContainer = styled.div`
 `;
 
 function Sidebar() {
+  const dark = useSelector((store) => store.darkModeSlice.isDark);
   return (
-    <StyledSidebar>
+    <StyledSidebar dark={dark}>
       <LogoContainer>
         <img src={OneBoxLogo} width={32} height={32} alt="main logo" />
       </LogoContainer>
