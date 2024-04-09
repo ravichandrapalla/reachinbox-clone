@@ -39,7 +39,7 @@ const TextTwo = styled.span`
 `;
 const TagContainer = styled.div`
   display: flex;
-  background-color: #222426;
+  background-color: initial;
   border-radius: 1rem;
   column-gap: 0.5rem;
   text-align: center;
@@ -52,6 +52,7 @@ const Tag = styled.span`
   padding: 0.1rem;
   color: #fff;
   font-size: 0.8rem;
+  background-color: initial;
 `;
 const Text = styled.span`
   color: #fff;

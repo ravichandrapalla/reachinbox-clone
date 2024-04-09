@@ -12,8 +12,9 @@ const Section = styled.section`
   /* width: 100%; */
 `;
 const SectionHeader = styled.header`
-  /* width: 100%; */
+  width: 100%;
   display: flex;
+  color: #ffffff;
 
   /* height: 2.25rem; */
 
@@ -26,14 +27,15 @@ const SectionBody = styled.div`
   display: flex;
   flex-direction: column;
   row-gap: 1.25rem;
-  padding: 0px 2rem;
-  align-items: center;
+  /* padding: 0px 2rem; */
+  padding-left: 1.8rem;
+  align-items: flex-start;
 `;
 const ModularDiv = styled.div`
   display: flex;
   flex-direction: column;
   text-align: left;
-  row-gap: 1.5rem;
+  row-gap: 1.1rem;
 `;
 const BriefContainer = styled.div`
   display: flex;

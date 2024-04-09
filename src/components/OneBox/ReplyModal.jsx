@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { IoClose } from "react-icons/io5";
 import ButtonDownArrow from "../../assects/arrow_drop_down.png";
@@ -10,26 +10,9 @@ import ImageIcon from "../../assects/image.png";
 import Emoji from "../../assects/sentiment_satisfied.png";
 import Unfold from "../../assects/PersonRemove.png";
 import CodeIcon from "../../assects/unfold_more.png";
+import { useSelector } from "react-redux";
 
 const ModalContainer = styled.div`
-  /* width: 45rem;
-  height: 32rem;
-  position: absolute;
-  bottom: 0;
-  left: 5%;
-
-  overflow: hidden;
-  border-radius: 0.5rem;
-  width: 90%;
-  background: #34383d;
-
-  border: 1px solid #23272c;
-
-  transition: transform 0.3s ease-in-out;
-  transform: ${(props) =>
-    props.isOpen ? "translateY(0)" : "translateY(100%)"};
-
-  z-index: 20; */
   width: 45rem;
   height: 32rem;
   position: absolute;
@@ -58,7 +41,7 @@ const ModalHeader = styled.header`
   background-color: #41464b;
   display: flex;
   /* padding: 10px 16px; */
-  padding: 10px 16px 10px 16px;
+  padding: 10px 5px 10px 30px;
   justify-content: space-between;
   align-items: center;
   align-content: flex-start;
@@ -75,13 +58,15 @@ const TextTypeOne = styled.span`
 const ModalBody = styled.section`
   display: flex;
   flex-direction: column;
-  /* background: transparent; */
+  background: #1f1f1f;
   height: 80%;
 `;
 const ModalBodyRow = styled.div`
   border-bottom: 1px solid #34383d;
   text-align: left;
-  padding: 8px 24px;
+  padding: 8px 30px;
+  background-color: #1f1f1f;
+  color: white;
 `;
 const ModalBodyTextArea = styled.textarea`
   padding: 1rem;
@@ -90,9 +75,9 @@ const ModalBodyTextArea = styled.textarea`
   font-size: 0.875rem;
   font-weight: 400;
   text-align: left;
-  padding-left: 24px;
+  padding-left: 30px;
   height: 100%;
-  /* background: transparent; */
+  background: #1f1f1f;
 `;
 
 const ModalFooter = styled.footer`
@@ -137,33 +122,83 @@ const Attachments = styled.div`
   background-color: transparent;
   cursor: pointer;
 `;
+const NewText = styled.span`
+  color: #bab9bd;
+  font-family: "Open Sans", sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+`;
 
-export const Modal = ({ isOpen, onClose }) => {
+export const Modal = ({ isOpen, onClose, send }) => {
+  const storeData = useSelector((state) => state);
+  // const {fromEmail, toEmail} = storeData.selectedMailBoxSlice;
   const [fromEmail, setFromEmail] = useState("");
   const [toEmail, setToEmail] = useState("");
   const [subject, setSubject] = useState("");
   const [text, setText] = useState("");
+  const [finalData, setFinalData] = useState({
+    toName: "",
+    to: "",
+    from: "",
+    fromName: "",
+    subject: "",
+    body: "",
+    references: "",
+    inReplyTo: "",
+  });
 
   const handleReply = () => {
     // Implement reply functionality here
+    console.log("final data is ", finalData);
+    send(storeData.selectedMailBoxSlice.threadId, finalData);
   };
+  const handleTextChange = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log("setting text", e.target.value);
+    setFinalData({ ...finalData, body: e.target.value });
+  };
+  useEffect(() => {
+    setFromEmail(storeData.selectedMailBoxSlice.fromEmail);
+    setToEmail(storeData.selectedMailBoxSlice.toEmail);
+    setSubject(storeData.selectedMailBoxSlice.subject);
+    setFinalData({
+      toName: storeData.selectedMailBoxSlice.toName,
+      to: storeData.selectedMailBoxSlice.toEmail,
+      from: storeData.selectedMailBoxSlice.fromEmail,
+      fromName: storeData.selectedMailBoxSlice.fromName,
+      subject: storeData.selectedMailBoxSlice.subject,
+      body: text,
+      references: storeData.selectedMailBoxSlice.references,
+      inReplyTo: storeData.selectedMailBoxSlice.inReplyTo,
+    });
+    console.log(`store data is `, storeData);
+  }, [storeData.selectedMailBoxSlice.fromEmail]);
 
   return (
     <ModalContainer isOpen={isOpen}>
       <ModalHeader>
         <TextTypeOne>Reply</TextTypeOne>
         <CloseButton onClick={onClose}>
-          <IoClose size={24} />
+          <IoClose size={24} color="white" />
         </CloseButton>
       </ModalHeader>
       <ModalBody>
-        <ModalBodyRow>to: jeanne@gmail.com</ModalBodyRow>
-        <ModalBodyRow>from: peter@reachinbox.com</ModalBodyRow>
-        <ModalBodyRow>Subject:Warmup Welcome</ModalBodyRow>
-        <ModalBodyTextArea>Hellow wrold</ModalBodyTextArea>
+        <ModalBodyRow>
+          <NewText>to:</NewText> {`${fromEmail}`}
+        </ModalBodyRow>
+        <ModalBodyRow>
+          <NewText>from:</NewText> {`${toEmail}`}
+        </ModalBodyRow>
+        <ModalBodyRow>
+          <NewText>Subject:</NewText> {`${subject}`}
+        </ModalBodyRow>
+        <ModalBodyTextArea onChange={(e) => handleTextChange(e)}>
+          {text}
+        </ModalBodyTextArea>
       </ModalBody>
       <ModalFooter>
-        <SendButton>
+        <SendButton onClick={handleReply}>
           <TextTypeTwo>Send</TextTypeTwo>
           <img
             src={ButtonDownArrow}
@@ -191,31 +226,3 @@ export const Modal = ({ isOpen, onClose }) => {
     </ModalContainer>
   );
 };
-
-{
-  /* <label>From Email</label>
-      <input
-        type="text"
-        value={fromEmail}
-        onChange={(e) => setFromEmail(e.target.value)}
-      />
-      <label>To Email</label>
-      <input
-        type="text"
-        value={toEmail}
-        onChange={(e) => setToEmail(e.target.value)}
-      />
-      <label>Subject</label>
-      <input
-        type="text"
-        value={subject}
-        onChange={(e) => setSubject(e.target.value)}
-      />
-      <label>Text to Send</label>
-      <textarea
-        value={text}
-        onChange={(e) => setText(e.target.value)}
-      ></textarea>
-      <button onClick={handleReply}>Send</button>
-      <button onClick={onClose}>Cancel</button> */
-}

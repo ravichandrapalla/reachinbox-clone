@@ -13,7 +13,7 @@ const SectionHeader = styled.header`
   text-align: left;
 
   /* height: 2.25rem; */
-
+  color: #ffffff;
   border-radius: 8px;
   padding: 8px 12px;
   gap: 1rem;

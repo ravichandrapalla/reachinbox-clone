@@ -3,8 +3,11 @@ import NoMailsIcon from "../assects/NoMailsIcon.png";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  handleDeleteAllcurrThreadData,
   handleGetAllMailsApi,
   handleGetAllcurrThreadData,
+  handleReplyEmail,
+  reset,
 } from "../services/resourceapi";
 import Spinner from "../ui/Spinner";
 import { IoIosArrowDown } from "react-icons/io";
@@ -22,6 +25,8 @@ import { ThreadBox } from "../components/OneBox/ThreadBox";
 import LeadDetails from "../components/OneBox/LeadDetails";
 import Activities from "../components/OneBox/Activities";
 import { Modal } from "../components/OneBox/ReplyModal";
+import ReplyIcon from "../assects/ReplyIcon.png";
+import toast from "react-hot-toast";
 
 const ScreenEmpty = styled.div`
   background: transparent;
@@ -81,7 +86,7 @@ const SpinnerBackground = styled.div`
   height: 100%;
   width: 100%;
   background: transparent;
-  background-color: rgba(219, 214, 217, 0.2);
+  background-color: initial;
   backdrop-filter: blur(5px);
 `;
 
@@ -92,7 +97,7 @@ const SpinnerContainer = styled.section`
   transform: translate(-50%, -50%);
 `;
 const AllMailsContainer = styled.section`
-  width: 15rem;
+  width: 20rem;
   display: flex;
   flex-direction: column;
   background: transparent;
@@ -112,7 +117,7 @@ const AllThreadsContainer = styled.section`
   border: 1px solid #33383f;
 `;
 const LeadActivitiesContainer = styled.section`
-  width: calc(100vw - 65rem);
+  width: 20rem;
   height: 85vh;
   display: flex;
   flex-direction: column;
@@ -120,6 +125,7 @@ const LeadActivitiesContainer = styled.section`
   overflow-y: auto;
   padding: 1rem;
   border-left: 1px solid #33383f;
+  gap: 1.5rem;
 `;
 const AllThreadsHeader = styled.section`
   /* padding: 1rem; */
@@ -140,7 +146,7 @@ const AllThreadsHeaderRightSection = styled.div`
   column-gap: 1rem;
 `;
 const RightDetailsOne = styled.div`
-  background-color: #1f1f1f;
+  /* background-color: #1f1f1f; */
   display: flex;
   column-gap: 0.2rem;
   padding: 0.1rem 0.3rem;
@@ -168,6 +174,7 @@ const TimeLineDate = styled.div`
 const ThreadMessagesContainer = styled.div`
   padding: 1.2rem;
   border-radius: 5px;
+  background-color: initial;
 `;
 const SingleThreadMessageBox = styled.div`
   border: 1px solid #343a40;
@@ -286,7 +293,7 @@ const DarkTextThree = styled.span`
 const ReloadLogoContainer = styled.div`
   display: flex;
   align-items: center;
-  background-color: #2f3030;
+  /* background-color: #2f3030; */
   padding: 0.5rem;
   border-radius: 0.5rem;
   border: 1px solid #343a40;
@@ -387,7 +394,7 @@ const TimeLineDateContainer = styled.div`
 `;
 const ReplyButton = styled.button`
   background: linear-gradient(to right, #4b63dd 100%, #0524bf 99%);
-  width: 8rem;
+  width: 6rem;
   height: 2.2rem;
   color: white;
   margin-left: 50px;
@@ -396,15 +403,20 @@ const ReplyButton = styled.button`
   position: fixed;
   bottom: 35px;
   visibility: ${(props) => (props.loading ? "hidden" : "visible")};
-
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
   z-index: 10;
   cursor: pointer;
 `;
+const ThraedDiv = styled.div``;
 export default function OneBox() {
   const storeData = useSelector((state) => state);
   const [allMails, setAllMails] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [currThreadId, setCurrThreadId] = useState(1021);
+  const [currThreadId, setCurrThreadId] = useState(
+    storeData.selectedMailBoxSlice.threadId || 0
+  );
   const [currThread, setCurrThread] = useState([]);
   const [threadLoading, setThreadLoading] = useState(false);
   const [showFullThread, setShowFullThread] = useState(false);
@@ -421,7 +433,7 @@ export default function OneBox() {
           // setCurrThreadId(
           //   data.data.threadId || storeData?.selectedMailBoxSlice?.threadId
           // );
-          dispatch(setSelectedMailData(data.data[0]));
+          // dispatch(setSelectedMailData(data.data[0]));
         } else {
           setAllMails([]);
           dispatch(removeSelectedMailData());
@@ -440,6 +452,8 @@ export default function OneBox() {
     const handleKeyDown = (event) => {
       if (event.key === "r" || event.key === "R") {
         handleReplyClick();
+      } else if ((event.key === "d" || event.key === "D") && currThreadId) {
+        handleThreadDelete();
       }
     };
 
@@ -448,7 +462,7 @@ export default function OneBox() {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, []);
+  }, [storeData?.selectedMailBoxSlice?.threadId]);
   const handleSetCurrThread = (data) => {
     setCurrThread(data.data);
     console.log("setting curr thread is", data.data);
@@ -484,6 +498,28 @@ export default function OneBox() {
   };
   const handleReplyClick = () => {
     setShowModal((show) => !show);
+  };
+  const handleThreadDelete = () => {
+    console.log(
+      `threadid is `,
+      currThreadId,
+      storeData.selectedMailBoxSlice.threadId
+    );
+    handleDeleteAllcurrThreadData(storeData.selectedMailBoxSlice.threadId)
+      .then((data) => {
+        setAllMails((prevMails) => {
+          setCurrThreadId(0);
+          return prevMails.filter((mail) => mail.threadId !== currThreadId);
+        });
+      })
+      .catch((err) => console.log(err));
+  };
+  const handleSendReply = (data) => {
+    handleReplyEmail(data)
+      .then((resp) => {
+        toast.success(resp.message);
+      })
+      .catch((err) => toast.success(err));
   };
 
   const handleCloseModal = () => {
@@ -627,46 +663,57 @@ export default function OneBox() {
             </ReloadLogoContainer>
           </AllThreadsHeaderRightSection>
         </AllThreadsHeader>
-        <DividerContainer>
-          <Divider></Divider>
-          <TimeLineDate>
-            <TimeLineDateContainer>Today</TimeLineDateContainer>
-          </TimeLineDate>
-        </DividerContainer>
-        {threadLoading ? (
-          <SpinnerBackground>
-            <SpinnerContainer>
-              <Spinner />
-            </SpinnerContainer>
-          </SpinnerBackground>
-        ) : !showFullThread ? (
+        {currThreadId ? (
           <>
-            <ThreadMessagesContainer key={currThread[0].id}>
-              <ThreadBox data={currThread[0]} />
-            </ThreadMessagesContainer>
-            {currThread.length > 1 && (
-              <DividerContainer>
-                <Divider></Divider>
-                <TimeLineDate onClick={() => toggleShowFullThread()}>
-                  <TimeLineDateContainer>{`View All ${currThread.length} replies `}</TimeLineDateContainer>
-                </TimeLineDate>
-              </DividerContainer>
+            <DividerContainer>
+              <Divider></Divider>
+              <TimeLineDate>
+                <TimeLineDateContainer>Today</TimeLineDateContainer>
+              </TimeLineDate>
+            </DividerContainer>
+            {threadLoading || currThread.length === 0 ? (
+              <SpinnerBackground>
+                <SpinnerContainer>
+                  <Spinner />
+                </SpinnerContainer>
+              </SpinnerBackground>
+            ) : !showFullThread ? (
+              <>
+                <ThreadMessagesContainer key={currThread[0].id}>
+                  <ThreadBox data={currThread[0]} />
+                </ThreadMessagesContainer>
+                {currThread.length > 1 && (
+                  <DividerContainer>
+                    <Divider></Divider>
+                    <TimeLineDate onClick={() => toggleShowFullThread()}>
+                      <TimeLineDateContainer>{`View All ${currThread.length} replies `}</TimeLineDateContainer>
+                    </TimeLineDate>
+                  </DividerContainer>
+                )}
+              </>
+            ) : (
+              currThread.map((t) => {
+                return (
+                  <ThreadMessagesContainer key={t.id}>
+                    <ThreadBox data={t} />
+                  </ThreadMessagesContainer>
+                );
+              })
             )}
+            <ReplyButton loading={threadLoading} onClick={handleReplyClick}>
+              <img src={ReplyIcon} alt="reply" />
+              Reply
+            </ReplyButton>
           </>
         ) : (
-          currThread.map((t) => {
-            return (
-              <ThreadMessagesContainer key={t.id}>
-                <ThreadBox data={t} />
-              </ThreadMessagesContainer>
-            );
-          })
+          ""
         )}
 
-        <ReplyButton loading={threadLoading} onClick={handleReplyClick}>
-          Reply
-        </ReplyButton>
-        <Modal isOpen={showModal} onClose={handleCloseModal} />
+        <Modal
+          isOpen={showModal}
+          onClose={handleCloseModal}
+          send={handleSendReply}
+        />
       </AllThreadsContainer>
       <LeadActivitiesContainer>
         <LeadDetails />

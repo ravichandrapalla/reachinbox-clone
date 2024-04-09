@@ -1,8 +1,9 @@
 import { styled } from "styled-components";
 
 const ThreadMessagesContainer = styled.div`
-  padding: 1.2rem;
+  /* padding: 1.2rem; */
   border-radius: 5px;
+  background-color: #1f1f1f;
 `;
 const SingleThreadMessageBox = styled.div`
   border: 1px solid #343a40;
@@ -10,11 +11,12 @@ const SingleThreadMessageBox = styled.div`
   padding: 0.8rem;
   height: 13rem;
   overflow-y: auto;
-  background-color: #1f1f1f;
+  background-color: initial;
 `;
 const SingleThreadBoxHeader = styled.div`
   display: flex;
   justify-content: space-between;
+  background-color: initial;
 `;
 const SingleThreadBoxBody = styled.div`
   display: flex;
@@ -22,6 +24,7 @@ const SingleThreadBoxBody = styled.div`
   text-align: left;
   padding-top: 1rem;
   row-gap: 0.5rem;
+  background-color: initial;
 `;
 const ThreadBoxHeaderLeft = styled.div`
   display: flex;

@@ -35,7 +35,8 @@ const LoginFormContainer = styled.section`
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
-  gap: 3rem;
+  column-gap: 3.5rem;
+  row-gap: 2rem;
   overflow: hidden;
 `;
 const LoginDetailsContainer = styled.section`
@@ -44,10 +45,12 @@ const LoginDetailsContainer = styled.section`
   align-items: ${(props) => props.type === "manual" && "center"};
   text-align: center;
   /* width: 100%; */
-  height: 6.43rem;
-  gap: 1.5rem;
+  height: 8rem;
+  gap: ${(props) => (props.type === "manual" ? "0.6rem" : "0.6rem")};
   padding: 0.5rem;
   overflow: hidden;
+  justify-content: space-between;
+  /* background-color: green; */
 `;
 const Legend = styled.p`
   width: 100%;
@@ -71,24 +74,27 @@ const NormalText = styled.p`
 //   color: #cccccc;
 // `;
 const GoogleSignUpButton = styled.button`
-  background: transparent;
-  height: 3rem;
+  /* background: yellow; */
+  /* height: 3rem; */
   border: 1px solid #707172;
   border-radius: 0.25rem;
-  display: flex;
+  background-color: transparent;
+
   justify-content: space-evenly;
   align-items: center;
-  gap: 0.75rem;
-  padding: 0.5rem;
+  /* gap: 0.5rem; */
+
+  /* padding: 0.3rem; */
   color: #cccccc;
   cursor: pointer;
 `;
 
 const ButtonInnerContainer = styled.div`
   /* width: 11.25rem; */
-  gap: 0.75rem;
+  column-gap: 0.75rem;
   display: flex;
-
+  width: 100%;
+  height: 40px;
   justify-content: center;
   align-items: center;
 `;
