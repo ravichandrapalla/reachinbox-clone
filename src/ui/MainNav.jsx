@@ -14,6 +14,7 @@ import campaignIcon from "../assects/CampaignIcon.png";
 import leadsIcon from "../assects/LeadsIcon.png";
 import onebox from "../assects/OneBox.png";
 import analytics from "../assects/Analytics.png";
+import { useSelector } from "react-redux";
 
 const NavList = styled.ul`
   display: flex;
@@ -68,7 +69,8 @@ const ListItems = styled.li`
   margin: 0;
 `;
 const ActiveTabContainer = styled.div`
-  background-color: #2f3030;
+  background-color: ${(props) => (props.isDark ? "#fff" : "#2f3030")};
+  /* background-color: #2f3030; */
   padding: 0.5rem;
   border-radius: 0.5rem;
   border: none;
@@ -76,6 +78,7 @@ const ActiveTabContainer = styled.div`
 `;
 
 function MainNav() {
+  const dark = useSelector((store) => store.darkModeSlice.isDark);
   return (
     <nav>
       <NavList>
@@ -106,7 +109,7 @@ function MainNav() {
         </ListItems>
         <ListItems>
           <StyledNavLink to="/oneBox">
-            <ActiveTabContainer>
+            <ActiveTabContainer dark={dark}>
               <img
                 src={onebox}
                 height={26}

@@ -193,7 +193,7 @@ export const Modal = ({ isOpen, onClose, send }) => {
       <ModalHeader dark={dark}>
         <TextTypeOne>Reply</TextTypeOne>
         <CloseButton onClick={onClose}>
-          <IoClose size={24} color="white" />
+          <IoClose size={24} color={dark ? "white" : "black"} />
         </CloseButton>
       </ModalHeader>
       <ModalBody dark={dark}>

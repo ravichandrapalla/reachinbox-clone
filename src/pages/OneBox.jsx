@@ -40,9 +40,10 @@ const ScreenEmpty = styled.div`
 
 const ScreenNonEmpty = styled.div`
   background: transparent;
-  height: 100vh;
+  height: 90vh;
   width: 100%;
   display: flex;
+  overflow: hidden;
   /* justify-content: center;
   align-items: center;
   align-content: center; */
@@ -101,10 +102,10 @@ const AllMailsContainer = styled.section`
   display: flex;
   flex-direction: column;
   background: transparent;
-  height: 85vh;
+  height: 100%;
   padding: 1.2rem;
   border-right: 1px solid #33383f;
-  flex: 1;
+  flex: 0.8;
   overflow-y: auto;
 `;
 const AllThreadsContainer = styled.section`
@@ -114,7 +115,7 @@ const AllThreadsContainer = styled.section`
   flex-direction: column;
   background: transparent;
   overflow: auto;
-  height: 90vh;
+  height: 100%;
   position: relative;
   border: 1px solid #33383f;
   flex: 2;
@@ -122,7 +123,7 @@ const AllThreadsContainer = styled.section`
 `;
 const LeadActivitiesContainer = styled.section`
   width: 20rem;
-  height: 85vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
   background: transparent;
@@ -130,7 +131,7 @@ const LeadActivitiesContainer = styled.section`
   padding: 1rem;
   border-left: 1px solid #33383f;
   gap: 1.5rem;
-  flex: 1;
+  flex: 0.8;
   overflow-y: auto;
 `;
 const AllThreadsHeader = styled.section`
