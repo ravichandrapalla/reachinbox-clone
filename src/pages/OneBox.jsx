@@ -430,6 +430,7 @@ export default function OneBox() {
   const [threadLoading, setThreadLoading] = useState(false);
   const [showFullThread, setShowFullThread] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [replyBoxAcive, setReplyBoxActive] = useState(false);
   const dark = useSelector((store) => store.darkModeSlice.isDark);
 
   const dispatch = useDispatch();
@@ -460,9 +461,13 @@ export default function OneBox() {
 
   useEffect(() => {
     const handleKeyDown = (event) => {
-      if (event.key === "r" || event.key === "R") {
+      if ((event.key === "r" || event.key === "R") && !replyBoxAcive) {
         handleReplyClick();
-      } else if ((event.key === "d" || event.key === "D") && currThreadId) {
+      } else if (
+        (event.key === "d" || event.key === "D") &&
+        currThreadId &&
+        !replyBoxAcive
+      ) {
         handleThreadDelete();
       }
     };
@@ -472,11 +477,14 @@ export default function OneBox() {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [storeData?.selectedMailBoxSlice?.threadId]);
+  }, [storeData?.selectedMailBoxSlice?.threadId, replyBoxAcive]);
   const handleSetCurrThread = (data) => {
     setCurrThread(data.data);
     console.log("setting curr thread is", data.data);
   };
+  // useEffect(() => {
+  //   console.log("reply box active", replyBoxAcive);
+  // }, [replyBoxAcive]);
   useEffect(() => {
     console.log(`calling thread with id ${currThreadId}`);
     if (currThreadId) {
@@ -489,9 +497,9 @@ export default function OneBox() {
         });
     }
   }, [currThreadId]);
-  useEffect(() => {
-    console.log(`full thread show ---`, showFullThread);
-  }, [showFullThread]);
+  // useEffect(() => {
+  //   console.log(`full thread show ---`, showFullThread);
+  // }, [showFullThread]);
 
   const EmptyScreen = () => {
     return (
@@ -724,6 +732,7 @@ export default function OneBox() {
           isOpen={showModal}
           onClose={handleCloseModal}
           send={handleSendReply}
+          setReplyActive={(value) => setReplyBoxActive(value)}
         />
       </AllThreadsContainer>
       <LeadActivitiesContainer>

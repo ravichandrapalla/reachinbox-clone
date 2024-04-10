@@ -141,13 +141,11 @@ const NewTextTwo = styled.span`
   font-size: 12px;
 `;
 
-export const Modal = ({ isOpen, onClose, send }) => {
+export const Modal = ({ isOpen, onClose, send, setReplyActive }) => {
   const storeData = useSelector((state) => state);
   const dark = useSelector((store) => store.darkModeSlice.isDark);
   // const {fromEmail, toEmail} = storeData.selectedMailBoxSlice;
-  const [fromEmail, setFromEmail] = useState("");
-  const [toEmail, setToEmail] = useState("");
-  const [subject, setSubject] = useState("");
+
   const [text, setText] = useState("");
   const [finalData, setFinalData] = useState({
     toName: "",
@@ -166,15 +164,10 @@ export const Modal = ({ isOpen, onClose, send }) => {
     send(storeData.selectedMailBoxSlice.threadId, finalData);
   };
   const handleTextChange = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
     console.log("setting text", e.target.value);
     setFinalData({ ...finalData, body: e.target.value });
   };
   useEffect(() => {
-    setFromEmail(storeData.selectedMailBoxSlice.fromEmail);
-    setToEmail(storeData.selectedMailBoxSlice.toEmail);
-    setSubject(storeData.selectedMailBoxSlice.subject);
     setFinalData({
       toName: storeData.selectedMailBoxSlice.toName,
       to: storeData.selectedMailBoxSlice.toEmail,
@@ -186,30 +179,41 @@ export const Modal = ({ isOpen, onClose, send }) => {
       inReplyTo: storeData.selectedMailBoxSlice.inReplyTo,
     });
     console.log(`store data is `, storeData);
-  }, [storeData.selectedMailBoxSlice.fromEmail]);
+  }, [storeData.selectedMailBoxSlice.id]);
 
   return (
     <ModalContainer isOpen={isOpen}>
       <ModalHeader dark={dark}>
         <TextTypeOne>Reply</TextTypeOne>
-        <CloseButton onClick={onClose}>
+        <CloseButton
+          onClick={() => {
+            setText("");
+            onClose();
+          }}
+        >
           <IoClose size={24} color={dark ? "white" : "black"} />
         </CloseButton>
       </ModalHeader>
       <ModalBody dark={dark}>
         <ModalBodyRow dark={dark}>
           <NewText>to:</NewText>{" "}
-          <NewTextTwo dark={dark}>{`${fromEmail}`}</NewTextTwo>
+          <NewTextTwo dark={dark}>{`${finalData.from}`}</NewTextTwo>
         </ModalBodyRow>
         <ModalBodyRow dark={dark}>
           <NewText>from:</NewText>{" "}
-          <NewTextTwo dark={dark}>{`${toEmail}`}</NewTextTwo>
+          <NewTextTwo dark={dark}>{`${finalData.to}`}</NewTextTwo>
         </ModalBodyRow>
         <ModalBodyRow dark={dark}>
           <NewText>Subject:</NewText>{" "}
-          <NewTextTwo dark={dark}>{`${subject}`}</NewTextTwo>
+          <NewTextTwo dark={dark}>{`${finalData.subject}`}</NewTextTwo>
         </ModalBodyRow>
-        <ModalBodyTextArea dark={dark} onChange={(e) => handleTextChange(e)}>
+        <ModalBodyTextArea
+          onFocus={() => setReplyActive(true)}
+          onBlur={() => setReplyActive(false)}
+          dark={dark}
+          onChange={(e) => handleTextChange(e)}
+          value={finalData.text}
+        >
           {text}
         </ModalBodyTextArea>
       </ModalBody>
