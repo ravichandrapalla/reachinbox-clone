@@ -14,6 +14,7 @@ const StyledSidebar = styled.aside`
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
 
   /* gap: 3.2rem; */
 `;
@@ -21,6 +22,22 @@ const LogoContainer = styled.div`
   margin-top: 1rem;
   height: 100px;
   cursor: pointer;
+`;
+const UserIcon = styled.div`
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  bottom: 20px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: green;
+`;
+const NameText = styled.span`
+  font-size: 15px;
+  font-weight: 400;
+  font-family: "Inter", "sans-serif";
 `;
 
 function Sidebar() {
@@ -32,6 +49,9 @@ function Sidebar() {
       </LogoContainer>
 
       <MainNav />
+      <UserIcon>
+        <NameText>AS</NameText>
+      </UserIcon>
     </StyledSidebar>
   );
 }

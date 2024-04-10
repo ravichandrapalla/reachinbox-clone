@@ -630,7 +630,9 @@ export default function OneBox() {
                 <IoIosArrowDown color="#4285f4" />
               </MailLegendContainer>
               <InboxDataContainer>
-                <NumberOfMails isDark={dark}>25/25</NumberOfMails>
+                <NumberOfMails isDark={dark}>
+                  {allMails.length}/{allMails.length}
+                </NumberOfMails>
                 <DarkText>Inboxes selected</DarkText>
               </InboxDataContainer>
             </ContainerOne>

@@ -53,7 +53,7 @@ const TagContainer = styled.div`
 `;
 const Tag = styled.span`
   padding: 0.1rem;
-  color: ${(props) => (props.dark ? "#fff" : "black")};
+  color: ${(props) => props.go && "green"};
   font-size: 0.8rem;
   background-color: initial;
 `;
@@ -143,7 +143,9 @@ export const Mail = ({
         <TagContainer dark={dark}>
           <Dot />
 
-          <Tag dark={dark}>Intrested</Tag>
+          <Tag go={true} dark={dark}>
+            Intrested
+          </Tag>
         </TagContainer>
         <TagContainer dark={dark}>
           <img
