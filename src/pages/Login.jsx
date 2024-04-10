@@ -21,7 +21,7 @@ const Header = styled.header`
 `;
 const Main = styled.main`
   /* width: 1440px; 663px*/
-  height: 41.435rem;
+  height: 90vh;
   display: flex;
   justify-content: center;
   align-items: center;
