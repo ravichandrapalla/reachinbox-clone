@@ -197,15 +197,15 @@ export const Modal = ({ isOpen, onClose, send, setReplyActive }) => {
       <ModalBody dark={dark}>
         <ModalBodyRow dark={dark}>
           <NewText>to:</NewText>{" "}
-          <NewTextTwo dark={dark}>{`${finalData.from}`}</NewTextTwo>
+          <NewTextTwo dark={dark}>{`${finalData.from || ""}`}</NewTextTwo>
         </ModalBodyRow>
         <ModalBodyRow dark={dark}>
           <NewText>from:</NewText>{" "}
-          <NewTextTwo dark={dark}>{`${finalData.to}`}</NewTextTwo>
+          <NewTextTwo dark={dark}>{`${finalData.to || ""}`}</NewTextTwo>
         </ModalBodyRow>
         <ModalBodyRow dark={dark}>
           <NewText>Subject:</NewText>{" "}
-          <NewTextTwo dark={dark}>{`${finalData.subject}`}</NewTextTwo>
+          <NewTextTwo dark={dark}>{`${finalData.subject || ""}`}</NewTextTwo>
         </ModalBodyRow>
         <ModalBodyTextArea
           onFocus={() => setReplyActive(true)}

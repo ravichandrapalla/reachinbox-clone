@@ -527,6 +527,7 @@ export default function OneBox() {
       .then((data) => {
         setAllMails((prevMails) => {
           setCurrThreadId(0);
+          dispatch(removeSelectedMailData());
           return prevMails.filter((mail) => mail.threadId !== currThreadId);
         });
       })

@@ -21,7 +21,7 @@ const Profile = styled.div`
   display: flex;
   justify-content: space-around;
   align-items: center;
-  width: 120px;
+  width: 180px;
   cursor: pointer;
 `;
 const Text = styled.span`
@@ -42,7 +42,7 @@ export function HeaderMenu() {
       </ListItems>
       <ListItems>
         <Profile>
-          <Text isDark={dark}>My Name</Text>
+          <Text isDark={dark}>Tim's Workspace</Text>
           <IoIosArrowDown color={dark ? "#fff" : "#1f1f1f"} />
         </Profile>
       </ListItems>
