@@ -7,6 +7,7 @@ const MailContainer = styled.div`
   border-left: ${(props) => props.selected && "3px solid #5C7CFA"};
   border-bottom: 1px solid #33383f;
   padding: 0.5rem;
+
   cursor: pointer;
 `;
 const MailNameContainer = styled.div`
@@ -40,14 +41,15 @@ const TextTwo = styled.span`
 `;
 const TagContainer = styled.div`
   display: flex;
-  background-color: initial;
+  background-color: #343a40;
   border-radius: 1rem;
   column-gap: 0.5rem;
   text-align: center;
-  justify-content: center;
-  width: 140px;
+  justify-content: space-around;
+  /* width: 140px; */
   align-items: center;
-  padding: 0.1rem;
+  padding-left: 0.4rem;
+  padding-right: 0.4rem;
 `;
 const Tag = styled.span`
   padding: 0.1rem;
@@ -73,6 +75,22 @@ const DarkText = styled.span`
   font-size: 0.75rem;
   font-weight: 400;
   font-family: "Open Sans", sans-serif;
+`;
+const Dot = styled.div`
+  width: 10px;
+  height: 10px;
+  border-radius: 50%; /* This makes it a circle */
+  background-color: green; /* Change color as needed */
+`;
+const TagFlex = styled.div`
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  column-gap: 0.4rem;
+  padding: 2px;
+  width: 83%;
+  flex-wrap: nowrap;
+  flex: 1;
 `;
 
 export const Mail = ({
@@ -121,16 +139,23 @@ export const Mail = ({
           <DarkText>{DateFormater(sentAt)}</DarkText>
         </DateContainer>
       </MailNameContainer>
-      <TagContainer>
-        <img
-          src={CampaignLogo}
-          alt="campaign"
-          width={15}
-          height={15}
-          color={dark ? "#fff" : "white"}
-        />
-        <Tag dark={dark}>Campaign Name</Tag>
-      </TagContainer>
+      <TagFlex>
+        <TagContainer>
+          <Dot />
+
+          <Tag dark={dark}>Intrested</Tag>
+        </TagContainer>
+        <TagContainer>
+          <img
+            src={CampaignLogo}
+            alt="campaign"
+            width={12}
+            height={12}
+            color={dark ? "#fff" : "white"}
+          />
+          <Tag dark={dark}>Campaign Name</Tag>
+        </TagContainer>
+      </TagFlex>
     </MailContainer>
   );
 };
