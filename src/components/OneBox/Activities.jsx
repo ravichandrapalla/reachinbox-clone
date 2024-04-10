@@ -42,6 +42,7 @@ const BriefContainer = styled.div`
   display: flex;
   justify-content: space-around;
   align-items: center;
+  text-align: left;
 `;
 const BodyTitle = styled.span`
   font-weight: 600;
@@ -50,10 +51,12 @@ const BodyTitle = styled.span`
   color: ${(props) => (props.dark === false ? "#1f1f1f" : "#ffffff")};
 `;
 const BriefHolder = styled.div`
-  padding: 0rem 0.7rem;
+  /* padding: 0rem 0.7rem; */
+  padding-right: 0.7rem;
   border-right: ${(props) => props.position === "left" && "1px solid #403f3f"};
 `;
 const BriefText = styled.span`
+  padding-left: ${(props) => (props.type === "last" ? "0.7rem" : "0")};
   color: ${(props) => (props.dark === false ? "#1f1f1f" : "#ffffff")};
   font-weight: 400;
   font-size: 12px;
@@ -142,7 +145,9 @@ export default function Activities() {
               <BriefText dark={dark}>3 Steps</BriefText>
             </BriefHolder>
             <BriefHolder>
-              <BriefText dark={dark}>5 Days in Sequence</BriefText>
+              <BriefText type="last" dark={dark}>
+                5 Days in Sequence
+              </BriefText>
             </BriefHolder>
           </BriefContainer>
         </ModularDiv>

@@ -4,4 +4,4 @@
 
 3. ---> go to the repo main directory in vscode --> open terminal --> type 'npm start' this command open the development server at port 3000. it will be automatically redirect itself to login screen.
 
-Note: only onebox page routes are created and others wont work.
+Note: Reply Thread Api is not working. it is giving same response as shown in documentation. (email thread not found) so its functionality is not available

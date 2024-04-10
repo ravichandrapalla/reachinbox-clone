@@ -11,7 +11,7 @@ const StyledHeaderMenu = styled.ul`
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.4rem;
+  gap: 1.5rem;
   padding: 1rem;
 `;
 const ListItems = styled.li`
@@ -19,9 +19,9 @@ const ListItems = styled.li`
 `;
 const Profile = styled.div`
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
-  width: 180px;
+  width: 150px;
   cursor: pointer;
 `;
 const Text = styled.span`
