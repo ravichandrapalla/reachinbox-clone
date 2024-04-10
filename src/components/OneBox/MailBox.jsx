@@ -41,7 +41,7 @@ const TextTwo = styled.span`
 `;
 const TagContainer = styled.div`
   display: flex;
-  background-color: #343a40;
+  background-color: ${(props) => (props.dark ? "#343a40" : "#e1e0e0")};
   border-radius: 1rem;
   column-gap: 0.5rem;
   text-align: center;
@@ -140,12 +140,12 @@ export const Mail = ({
         </DateContainer>
       </MailNameContainer>
       <TagFlex>
-        <TagContainer>
+        <TagContainer dark={dark}>
           <Dot />
 
           <Tag dark={dark}>Intrested</Tag>
         </TagContainer>
-        <TagContainer>
+        <TagContainer dark={dark}>
           <img
             src={CampaignLogo}
             alt="campaign"

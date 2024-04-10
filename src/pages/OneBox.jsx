@@ -311,7 +311,8 @@ const ReloadLogoContainer = styled.div`
 const CountContainer = styled.span`
   display: flex;
   align-items: center;
-  background-color: #2f3030;
+  /* background-color: #2f3030; */
+  background-color: ${(props) => (props.dark ? "#2f3030" : "")};
   padding: 0.3rem 0.5rem;
   border-radius: 10px;
   color: #4285f4;
@@ -645,7 +646,7 @@ export default function OneBox() {
           </InputContainer>
           <Containerthree>
             <ReplyCountDiv>
-              <CountContainer>26</CountContainer>
+              <CountContainer dark={dark}>26</CountContainer>
               <Text dark={dark}>New Replies</Text>
             </ReplyCountDiv>
 
