@@ -55,7 +55,7 @@ const TagContainer = styled.div`
 const Tag = styled.span`
   padding: 0.1rem;
   color: ${(props) =>
-    props.go ? "green" : props.dark ? "#ffffff" : "initial"};
+    props.go ? "#46C18D" : props.dark ? "#ffffff" : "initial"};
   font-size: 0.8rem;
   background-color: initial;
 `;
@@ -82,7 +82,7 @@ const Dot = styled.div`
   width: 10px;
   height: 10px;
   border-radius: 50%; /* This makes it a circle */
-  background-color: green; /* Change color as needed */
+  background-color: #46c18d; /* Change color as needed */
 `;
 const TagFlex = styled.div`
   display: flex;
