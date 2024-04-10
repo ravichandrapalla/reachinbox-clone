@@ -38,6 +38,7 @@ const NameText = styled.span`
   font-size: 15px;
   font-weight: 400;
   font-family: "Inter", "sans-serif";
+  color: white;
 `;
 
 function Sidebar() {

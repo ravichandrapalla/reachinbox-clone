@@ -5,7 +5,8 @@ import { setSelectedMailData } from "../../redux/store";
 
 const MailContainer = styled.div`
   border-left: ${(props) => props.selected && "3px solid #5C7CFA"};
-  border-bottom: 1px solid #33383f;
+  background-color: ${(props) => props.selected && !props.dark && "#F4FAFF"};
+  /* border-bottom: 1px solid #33383f; */
   padding: 0.5rem;
 
   cursor: pointer;
@@ -53,7 +54,8 @@ const TagContainer = styled.div`
 `;
 const Tag = styled.span`
   padding: 0.1rem;
-  color: ${(props) => props.go && "green"};
+  color: ${(props) =>
+    props.go ? "green" : props.dark ? "#ffffff" : "initial"};
   font-size: 0.8rem;
   background-color: initial;
 `;
@@ -129,6 +131,7 @@ export const Mail = ({
     <MailContainer
       selected={storeData.selectedMailBoxSlice.id === id}
       onClick={() => setCurrentThreadId(threadId)}
+      dark={dark}
     >
       <MailNameContainer>
         <MailUser>
@@ -153,7 +156,7 @@ export const Mail = ({
             alt="campaign"
             width={12}
             height={12}
-            color={dark ? "#fff" : "white"}
+            color={dark ? "#fff" : "#637381"}
           />
           <Tag dark={dark}>Campaign Name</Tag>
         </TagContainer>
