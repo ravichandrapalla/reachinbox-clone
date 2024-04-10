@@ -633,7 +633,7 @@ export default function OneBox() {
     const { fromEmail, fromName } = storeData.selectedMailBoxSlice;
     return (
       <>
-        <Text>{fromName}</Text>
+        <Text dark={dark}>{fromName}</Text>
         <DarkText>{fromEmail}</DarkText>
       </>
     );
