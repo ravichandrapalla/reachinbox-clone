@@ -4,6 +4,7 @@ import Email from "../../assects/email.png";
 
 import DraftIcon from "../../assects/drafts.png";
 import { useSelector } from "react-redux";
+import MailTimeline from "../../assects/MailTimeline.png";
 
 const Section = styled.section`
   background-color: transparent;
@@ -72,7 +73,7 @@ const Timeline = styled.div`
   flex-direction: column;
   /* background-color: red; */
   align-items: center;
-  margin-right: 1rem; /* Adjust spacing between timeline items */
+  margin-right: 0.2rem; /* Adjust spacing between timeline items */
 `;
 
 const TimelineIcon = styled.div`
@@ -154,7 +155,7 @@ export default function Activities() {
         <Trick>
           <Timeline>
             <TimelineIcon>
-              <img src={Email} alt="email" width={20} height={20} />
+              <img src={Email} alt="email" width={25} height={25} />
             </TimelineIcon>
             <TimelineLine />
           </Timeline>
@@ -170,32 +171,32 @@ export default function Activities() {
         <Trick>
           <Timeline>
             <TimelineIcon>
-              <img src={Email} alt="email" width={20} height={20} />
+              <img src={Email} alt="email" width={25} height={25} />
             </TimelineIcon>
             <TimelineLine />
           </Timeline>
           <TimelineContainer>
-            <TimelineHead dark={dark}>Step 1: Email</TimelineHead>
+            <TimelineHead dark={dark}>Step 2: Email</TimelineHead>
             <BriefContainer>
-              <img src={SendIcon} alt="send" />
-              <TimelineTailOne>Sent</TimelineTailOne>
-              <TimelineTailTwo>3rd,Feb</TimelineTailTwo>
+              <img src={MailTimeline} alt="send" />
+              <TimelineTailOne>Opened</TimelineTailOne>
+              <TimelineTailTwo>5th,Feb</TimelineTailTwo>
             </BriefContainer>
           </TimelineContainer>
         </Trick>
         <Trick>
           <Timeline>
             <TimelineIcon>
-              <img src={Email} alt="email" width={20} height={20} />
+              <img src={Email} alt="email" width={25} height={25} />
             </TimelineIcon>
             <TimelineLine number="last" />
           </Timeline>
           <TimelineContainer>
-            <TimelineHead dark={dark}>Step 1: Email</TimelineHead>
+            <TimelineHead dark={dark}>Step 3: Email</TimelineHead>
             <BriefContainer>
-              <img src={SendIcon} alt="send" />
-              <TimelineTailOne>Sent</TimelineTailOne>
-              <TimelineTailTwo>3rd,Feb</TimelineTailTwo>
+              <img src={MailTimeline} alt="send" />
+              <TimelineTailOne>Opened</TimelineTailOne>
+              <TimelineTailTwo>5th,Feb</TimelineTailTwo>
             </BriefContainer>
           </TimelineContainer>
         </Trick>
