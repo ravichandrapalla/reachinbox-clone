@@ -67,15 +67,23 @@ const ThreadMessage = styled.div`
   font-size: 0.8rem;
   overflow-y: auto;
 `;
+const FlexDiv = styled.div`
+  display: flex;
+  column-gap: 0.5rem;
+`;
 export const ThreadBox = ({ data }) => {
   const dark = useSelector((store) => store.darkModeSlice.isDark);
   const getThreadHeader = (threadData) => {
-    const { fromEmail, toEmail, subject } = threadData;
+    const { fromEmail, toEmail, subject, cc } = threadData;
     return (
       <>
         <ThreadBoxHeaderLeft>
           <TextHighWidth dark={dark}>${subject}</TextHighWidth>
-          <DarkTextTwo dark={dark}>from: {fromEmail}</DarkTextTwo>
+          <FlexDiv>
+            <DarkTextTwo dark={dark}>from: {fromEmail}</DarkTextTwo>
+            {cc.length !== 0 && <DarkTextTwo dark={dark}>cc: {cc}</DarkTextTwo>}
+          </FlexDiv>
+
           <DarkTextTwo dark={dark}>to: {toEmail}</DarkTextTwo>
         </ThreadBoxHeaderLeft>
         <ThreadBoxHeaderRight>
