@@ -27,6 +27,7 @@ import Activities from "../components/OneBox/Activities";
 import { Modal } from "../components/OneBox/ReplyModal";
 import ReplyIcon from "../assects/ReplyIcon.png";
 import toast from "react-hot-toast";
+import SearchIcon from "../assects/SearchGlass.png";
 
 const ScreenEmpty = styled.div`
   background: transparent;
@@ -317,16 +318,19 @@ const CountContainer = styled.span`
 `;
 const InputContainer = styled.div`
   padding-top: 1rem;
-  background-color: transparent;
+  display: flex;
+  justify-content: flex-start;
+  /* background-color: transparent; */
   overflow: hidden;
 `;
 const SearchInput = styled.input`
-  background-color: #2f3030;
+  background-color: ${(props) => (props.dark ? "#2f3030" : "")};
   border-radius: 0.3rem;
   padding: 0.5rem 0.5rem;
   outline: none;
   border: none;
   width: 94%;
+  border: 1px solid #343a40;
 `;
 const Containerthree = styled.span`
   display: flex;
@@ -636,7 +640,8 @@ export default function OneBox() {
             </ContainerTwo>
           </CompoundContainee>
           <InputContainer>
-            <SearchInput placeholder="Search" />
+            {/* <img src={SearchIcon} alt="search" /> */}
+            <SearchInput dark={dark} placeholder="Search" />
           </InputContainer>
           <Containerthree>
             <ReplyCountDiv>
