@@ -98,6 +98,74 @@ const SpinnerContainer = styled.section`
   left: 50%;
   transform: translate(-50%, -50%);
 `;
+const DelteModalBackground = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  /* background: transparent; */
+  background-color: RGBA(132, 132, 132, 0.5);
+
+  /* backdrop-filter: blur(5px); */
+`;
+
+const DeleteModalContainer = styled.section`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #000000;
+  display: flex;
+  flex-direction: column;
+  row-gap: 1.5rem;
+  column-gap: 1rem;
+  padding: 3rem 5rem;
+  border-radius: 5px;
+  z-index: 999;
+`;
+
+const WarningText = styled.span`
+  font-weight: 700;
+  font-family: "Open Sans", sans-serif;
+  font-size: 24px;
+  color: #ffffff;
+`;
+const WarningDetail = styled.span`
+  font-weight: 400;
+  font-family: "Open Sans", sans-serif;
+  font-size: 13px;
+  color: #e8e8e8;
+`;
+const OptionsContainer = styled.div`
+  display: flex;
+  column-gap: 0.5rem;
+  justify-content: space-around;
+`;
+const CancelButton = styled.button`
+  padding: 0.5rem 1.5rem 0.5rem 1.5rem;
+
+  background-color: #25262b;
+  border: none;
+  outline: none;
+  border-radius: 3px;
+  cursor: pointer;
+`;
+const ButtonText = styled.span`
+  font-weight: 600;
+  font-family: "Open Sans", sans-serif;
+  font-size: 14px;
+  color: white;
+`;
+const DeleteButton = styled.button`
+  padding: 0.5rem 1.5rem 0.5rem 1.5rem;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #fa5252 100%, #a91919 100%);
+`;
+
 const AllMailsContainer = styled.section`
   width: 20rem;
   display: flex;
@@ -436,6 +504,7 @@ export default function OneBox() {
   const [showFullThread, setShowFullThread] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [replyBoxAcive, setReplyBoxActive] = useState(false);
+  const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const dark = useSelector((store) => store.darkModeSlice.isDark);
 
   const dispatch = useDispatch();
@@ -463,6 +532,9 @@ export default function OneBox() {
       dispatch(removeSelectedMailData());
     };
   }, []);
+  const deleteThread = () => {
+    handleThreadDelete();
+  };
 
   useEffect(() => {
     const handleKeyDown = (event) => {
@@ -473,7 +545,7 @@ export default function OneBox() {
         currThreadId &&
         !replyBoxAcive
       ) {
-        handleThreadDelete();
+        setDeleteModalVisible(true);
       }
     };
 
@@ -528,6 +600,8 @@ export default function OneBox() {
       currThreadId,
       storeData.selectedMailBoxSlice.threadId
     );
+    setDeleteModalVisible(false);
+    setLoading(true);
     handleDeleteAllcurrThreadData(storeData.selectedMailBoxSlice.threadId)
       .then((data) => {
         setAllMails((prevMails) => {
@@ -536,7 +610,8 @@ export default function OneBox() {
           return prevMails.filter((mail) => mail.threadId !== currThreadId);
         });
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err))
+      .finally(() => setLoading(false));
   };
   const handleSendReply = (data) => {
     handleReplyEmail(data)
@@ -748,6 +823,22 @@ export default function OneBox() {
         <LeadDetails />
         <Activities />
       </LeadActivitiesContainer>
+      {deleteModalVisible && (
+        <DelteModalBackground>
+          <DeleteModalContainer>
+            <WarningText>Are you sure?</WarningText>
+            <WarningDetail>Your selected email will be deleted</WarningDetail>
+            <OptionsContainer>
+              <CancelButton onClick={() => setDeleteModalVisible(false)}>
+                <ButtonText>Cancel</ButtonText>
+              </CancelButton>
+              <DeleteButton onClick={() => deleteThread()}>
+                <ButtonText>Delete</ButtonText>
+              </DeleteButton>
+            </OptionsContainer>
+          </DeleteModalContainer>
+        </DelteModalBackground>
+      )}
     </ScreenNonEmpty>
   );
 }
