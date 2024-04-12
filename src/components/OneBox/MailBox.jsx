@@ -81,8 +81,14 @@ const DarkText = styled.span`
 const Dot = styled.div`
   width: 10px;
   height: 10px;
-  border-radius: 50%; /* This makes it a circle */
+  border-radius: inherit; /* This makes it a circle */
   background-color: #46c18d; /* Change color as needed */
+`;
+const DotSurrounding = styled.div`
+  padding: 0.15rem;
+  background-color: #c4ecda;
+  border-radius: 50%;
+  border: 1px solid #c4ecda;
 `;
 const TagFlex = styled.div`
   display: flex;
@@ -144,7 +150,9 @@ export const Mail = ({
       </MailNameContainer>
       <TagFlex>
         <TagContainer dark={dark}>
-          <Dot />
+          <DotSurrounding>
+            <Dot />
+          </DotSurrounding>
 
           <Tag go={true} dark={dark}>
             Intrested
